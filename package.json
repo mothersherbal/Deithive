@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "login": "mocha Diethive/frontend/selenium-tests/test/login.test.js --timeout 20000",
+    "test:selenium": "mocha Diethive/frontend/selenium-tests/test/login.test.js --timeout 20000"
+  },
+  "devDependencies": {
+    "mocha": "^11.7.6",
+    "selenium-webdriver": "^4.44.0"
+  }
+}

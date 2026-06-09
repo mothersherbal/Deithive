@@ -1,0 +1,76 @@
+name: Selenium E2E Test Runner
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  selenium-login-test:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+          MYSQL_DATABASE: 'diethive'
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.10
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Install Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install Flask PyMySQL cryptography google-generativeai Flask-Mail APScheduler
+
+      - name: Install MySQL Client
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y mysql-client
+
+      - name: Wait for MySQL and Import Schema
+        run: |
+          # Wait until MySQL service is healthy and accepts connections
+          until mysqladmin ping -h 127.0.0.1 --silent; do
+            echo "Waiting for MySQL database to initialize..."
+            sleep 2
+          done
+          
+          echo "MySQL is up and running. Importing schema..."
+          mysql -h 127.0.0.1 -u root diethive < Diethive/backend/diethive.sql
+          echo "Database schema imported successfully."
+
+      - name: Start Flask Server
+        run: |
+          cd Diethive/backend
+          python app.py &
+          
+          # Wait for Flask to bind to port 5000
+          echo "Waiting for Flask server to start..."
+          sleep 5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      - name: Run Selenium Tests (Headless)
+        env:
+          BASE_URL: 'http://localhost:5000'
+          HEADLESS: 'true'
+        run: npm run login
