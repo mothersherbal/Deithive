@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recode Potential | DietHive</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .full-hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 100px 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .h-badge {
+            background: rgba(139, 92, 246, 0.1);
+            border: 1px solid rgba(139, 92, 246, 0.2);
+            padding: 12px 25px;
+            border-radius: 100px;
+            color: var(--primary);
+            font-size: 13px;
+            font-weight: 900;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 40px;
+        }
+
+        .h-title {
+            font-family: 'Outfit';
+            font-size: 120px;
+            font-weight: 950;
+            line-height: 0.9;
+            letter-spacing: -6px;
+            margin-bottom: 40px;
+            color: #fff;
+        }
+
+        .h-subtitle {
+            font-size: 26px;
+            color: var(--text-soft);
+            font-weight: 600;
+            max-width: 800px;
+            margin: 0 auto 60px;
+            line-height: 1.4;
+        }
+
+        .cta-flex {
+            display: flex;
+            gap: 30px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            border: 2px solid var(--border);
+            padding: 20px 45px;
+            border-radius: 22px;
+            color: #fff;
+            font-size: 17px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+        }
+
+        .btn-ghost:hover {
+            background: rgba(255, 255, 255, 0.05);
+            transform: translateY(-3px);
+        }
+
+        .feature-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 40px;
+            max-width: 1200px;
+            width: 100%;
+            margin-top: 120px;
+        }
+
+        .f-node {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 50px 40px;
+            border-radius: 40px;
+            text-align: center;
+            transition: 0.4s;
+        }
+
+        .f-node:hover {
+            transform: translateY(-15px);
+            border-color: var(--primary);
+        }
+
+        .f-node i {
+            font-size: 40px;
+            color: var(--primary);
+            margin-bottom: 25px;
+        }
+
+        .f-node h4 {
+            font-family: 'Outfit';
+            font-size: 24px;
+            font-weight: 950;
+            margin-bottom: 10px;
+        }
+
+        .f-node p {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 600;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="full-hero">
+        <span class="h-badge">ELITE BEHAVIORAL PROTOCOL</span>
+        <h1 class="h-title">RECODE<br>POTENTIAL</h1>
+        <p class="h-subtitle">
+            Synchronize your diet, habits, and cognitive focus in one world-class console.
+            Designed for the performance architect.
+        </p>
+
+        <div class="cta-flex">
+            <a href="login.html" class="btn-main"
+                style="padding: 24px 60px; font-size: 18px; border-radius: 24px;">LAUNCH SYNC</a>
+            <a href="about.html" class="btn-ghost">CORE PROTOCOL</a>
+        </div>
+
+        <div class="feature-row">
+            <div class="f-node">
+                <i class="fa-solid fa-bolt"></i>
+                <h4>Direct Feed</h4>
+                <p>Real-time synchronization of your daily performance metrics.</p>
+            </div>
+            <div class="f-node">
+                <i class="fa-solid fa-brain"></i>
+                <h4>Wisdom Vault</h4>
+                <p>Access high-precision motivational stories to prime your brain.</p>
+            </div>
+            <div class="f-node">
+                <i class="fa-solid fa-shield-halved"></i>
+                <h4>Secure Node</h4>
+                <p>End-to-end encryption for your biological and habit logs.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+
+</html>

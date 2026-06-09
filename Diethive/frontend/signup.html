@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Buddy V3 | Universal Registration</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root {
+      --bg: #07080c;
+      --sidebar: #0f1016;
+      --surface: rgba(22, 28, 45, 0.7);
+      --border: rgba(255, 255, 255, 0.08);
+      --primary: #8b5cf6;
+      --primary-glow: rgba(139, 92, 246, 0.3);
+      --text: #f8fafc;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    h4,
+    .brand {
+      font-family: "Outfit", sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background-image:
+        radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 90%, rgba(16, 185, 129, 0.1) 0%, transparent 40%);
+    }
+
+    .auth-container {
+      width: 100%;
+      max-width: 1200px;
+      min-height: 800px;
+      background: var(--sidebar);
+      border: 1px solid var(--border);
+      border-radius: 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+    }
+
+    /* BANNER */
+    .auth-banner {
+      background: linear-gradient(135deg, #0e1525 0%, #070b14 100%);
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      border-right: 1px solid var(--border);
+    }
+
+    .auth-banner h1 {
+      font-size: 64px;
+      font-weight: 900;
+      line-height: 0.95;
+      letter-spacing: -3px;
+    }
+
+    .auth-banner h1 span {
+      color: var(--primary);
+      text-shadow: 0 0 20px var(--primary-glow);
+    }
+
+    .auth-banner p {
+      font-size: 20px;
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-top: 30px;
+      max-width: 450px;
+    }
+
+    .feature-item {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding: 30px;
+      background: rgba(255, 255, 255, 0.03);
+      border-radius: 24px;
+      border: 1px solid var(--border);
+      margin-bottom: 20px;
+    }
+
+    /* FORM */
+    .auth-form-panel {
+      padding: 80px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      overflow-y: auto;
+    }
+
+    .form-header h2 {
+      font-size: 42px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .form-header p {
+      color: #94a3b8;
+      margin-bottom: 40px;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 25px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 11px;
+      font-weight: 800;
+      color: #64748b;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+
+    .input-wrap {
+      position: relative;
+    }
+
+    .input-wrap i {
+      position: absolute;
+      left: 22px;
+      top: 18px;
+      color: var(--primary);
+      font-size: 18px;
+    }
+
+    input {
+      width: 100%;
+      height: 60px;
+      padding-left: 60px;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      color: #fff;
+      font-size: 16px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    input:focus {
+      border-color: var(--primary);
+      background: rgba(255, 255, 255, 0.08);
+      box-shadow: 0 0 0 5px var(--primary-glow);
+      outline: none;
+    }
+
+    .btn-auth {
+      width: 100%;
+      height: 64px;
+      background: var(--primary);
+      color: #fff;
+      border-radius: 20px;
+      border: none;
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 15px 30px var(--primary-glow);
+      transition: 0.3s;
+      margin-top: 20px;
+    }
+
+    .btn-auth:hover {
+      transform: translateY(-3px);
+      filter: brightness(1.1);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 150px;
+      gap: 20px;
+    }
+
+    .link-switch {
+      text-align: center;
+      margin-top: 30px;
+      color: #64748b;
+      font-weight: 700;
+    }
+
+    .link-switch a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 800;
+      margin-left: 5px;
+    }
+
+    #successView {
+      text-align: center;
+      display: none;
+      padding: 40px;
+    }
+
+    #successView i {
+      font-size: 80px;
+      color: #10b981;
+      margin-bottom: 30px;
+    }
+
+    @media (max-width: 1100px) {
+      .auth-container {
+        grid-template-columns: 1fr;
+        min-height: auto;
+      }
+
+      .auth-banner {
+        display: none;
+      }
+
+      .auth-form-panel {
+        padding: 40px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="auth-container">
+    <section class="auth-banner">
+      <div>
+        <a href="index.html" class="brand"
+          style="font-size: 32px; margin-bottom: 80px; display: flex; align-items: center; gap: 15px; text-decoration: none; color: #fff;">
+          <i class="fa-solid fa-rocket" style="color: var(--primary); font-size: 40px;"></i>
+          BUDDY
+        </a>
+        <h1>Initiate Your <span>Transformation</span>.</h1>
+        <p>Register as a new explorer to unlock advanced goal synchronization and ancient wisdom scrolls.</p>
+      </div>
+
+      <div class="auth-features">
+        <div class="feature-item">
+          <i class="fa-solid fa-rocket" style="font-size: 28px; color: var(--primary);"></i>
+          <div>
+            <div style="font-weight: 800; font-size: 18px;">Zero-Latent Setup</div>
+            <div style="font-size: 14px; color: #94a3b8;">High-speed entry into high performance.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="auth-form-panel">
+      <div id="signupFlow">
+        <div class="form-header">
+          <h2>New Identity</h2>
+          <p>Enter your baseline variables to start synchronization.</p>
+        </div>
+
+        <form id="signupForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Full Identity Name</label>
+              <div class="input-wrap">
+                <i class="fa-solid fa-user-gear"></i>
+                <input type="text" id="name" placeholder="Alex Rivera" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Age Variable</label>
+              <input type="number" id="age" placeholder="24" style="padding-left: 20px;" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Email Frequency Unit</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-at"></i>
+              <input type="email" id="email" placeholder="explorer@buddy.app" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Access Key</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-key"></i>
+              <input type="password" id="password" placeholder="Min 6 characters" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Confirm Access Key</label>
+            <div class="input-wrap">
+              <i class="fa-solid fa-shield-halved"></i>
+              <input type="password" id="confirm" placeholder="Repeat Key" required>
+            </div>
+          </div>
+
+          <div style="display: flex; align-items: flex-start; gap: 10px; margin-bottom: 30px;">
+            <input type="checkbox" style="width: 20px; height: 20px; cursor: pointer;" required>
+            <span style="font-size: 14px; color: #64748b; font-weight: 700;">I accept the <a href="#"
+                style="color: var(--primary);">System Protocol</a> and data privacy.</span>
+          </div>
+
+          <button type="submit" class="btn-auth">START SYNCHRONIZATION <i class="fa-solid fa-bolt"
+              style="margin-left: 10px;"></i></button>
+
+          <div class="link-switch">
+            Already in system? <a href="login.html">Synchronize Portals</a>
+          </div>
+        </form>
+      </div>
+
+      <div id="successView">
+        <i class="fa-solid fa-circle-check"></i>
+        <h2 style="font-size: 38px; font-weight: 900; margin-bottom: 10px;">Pathway Confirmed</h2>
+        <p style="color: #94a3b8; font-weight: 600; margin-bottom: 40px;">Your new identity has been recorded into the
+          main Buddy console. Synchronization is complete.</p>
+        <a href="login.html" class="btn-auth"
+          style="display: flex; align-items: center; justify-content: center; text-decoration: none;">PROCEED TO LOGIN
+          <i class="fa-solid fa-arrow-right" style="margin-left: 15px;"></i></a>
+      </div>
+    </section>
+  </div>
+
+    <script src="buddy.js"></script>
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const full_name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const confirm_password = document.getElementById('confirm').value;
+
+            if (password !== confirm_password) {
+                alert("Passwords do not match!");
+                return;
+            }
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ full_name, email, password, confirm_password })
+                });
+
+                const data = await response.json();
+                if (data.status === 'success') {
+                    document.getElementById('signupFlow').style.display = 'none';
+                    document.getElementById('successView').style.display = 'block';
+                    if (typeof Buddy !== 'undefined') Buddy.celebrate();
+                } else {
+                    alert(data.message || 'Registration failed');
+                }
+            } catch (err) {
+                console.error('Registration error:', err);
+                alert('Connection to server failed.');
+            }
+        });
+    </script>
+</body>
+
+</html>

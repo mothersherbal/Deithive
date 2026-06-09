@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wisdom Sanctuary | The Great Library</title>
+    <link rel="stylesheet" href="global.css">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Outfit:wght@300;400;600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-dark: #020617;
+            --accent-gold: #e2b857;
+            --text-main: #f8fafc;
+            --text-dim: #94a3b8;
+            --card-glass: rgba(15, 23, 42, 0.6);
+            --gold-glow: 0 0 20px rgba(226, 184, 87, 0.2);
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .hero-section {
+            position: relative;
+            height: 450px;
+            background: url('library_hero_v2_1773475020363.png') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            text-align: center;
+            margin-bottom: -50px;
+            overflow: hidden;
+        }
+
+        .hero-section::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom, rgba(2, 6, 23, 0.4), var(--bg-dark));
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            padding: 0 20px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(40px, 8vw, 72px);
+            margin: 0;
+            color: var(--accent-gold);
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 18px;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            margin-top: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 30px 100px;
+            position: relative;
+            z-index: 5;
+        }
+
+        /* Tabs Selection */
+        .genre-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+            background: var(--card-glass);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 100px;
+            margin-bottom: 60px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        .genre-tabs::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-dim);
+            padding: 12px 30px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.4s ease;
+            white-space: nowrap;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            background: var(--accent-gold);
+            color: #000;
+            box-shadow: 0 10px 20px rgba(226, 184, 87, 0.3);
+        }
+
+        /* Stories Grid */
+        .stories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 30px;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .story-card {
+            background: var(--card-glass);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-radius: 24px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .story-card:hover {
+            transform: translateY(-12px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5), var(--gold-glow);
+        }
+
+        .card-header {
+            padding: 30px 30px 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.03);
+        }
+
+        .card-category {
+            font-size: 11px;
+            color: var(--accent-gold);
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            margin: 0;
+            line-height: 1.2;
+            color: var(--text-main);
+        }
+
+        .card-body {
+            padding: 20px 30px 40px;
+            color: var(--text-dim);
+            font-size: 15px;
+            line-height: 1.7;
+            flex-grow: 1;
+        }
+
+        /* Reader Overlay */
+        .reader-overlay {
+            position: fixed;
+            inset: 0;
+            background: #fbf8f3; /* High-end paper color */
+            color: #1a1a1a;
+            z-index: 1000;
+            display: none;
+            overflow-y: auto;
+            padding: 80px 20px;
+            animation: slideInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+
+        .reader-overlay.active { display: block; }
+
+        .reader-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .close-reader {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            background: #1a1a1a;
+            color: #fff;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            z-index: 1001;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .reader-genre {
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            color: var(--accent-gold);
+            font-weight: 800;
+            font-size: 12px;
+            display: block;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .reader-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 6vw, 64px);
+            text-align: center;
+            margin-bottom: 60px;
+            color: #2d1a0a;
+        }
+
+        .reader-text {
+            font-family: 'Lora', serif;
+            font-size: 21px;
+            line-height: 2;
+            text-align: justify;
+            color: #333;
+        }
+
+        .reader-text p { margin-bottom: 30px; }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { height: 350px; }
+            .genre-tabs { padding: 10px; gap: 8px; }
+            .tab-btn { padding: 10px 20px; font-size: 12px; }
+            .close-reader { left: 20px; top: 20px; padding: 10px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="logo"><i class="fa-solid fa-rocket" style="color:var(--accent-gold)"></i> DietHive</div>
+        <nav class="nav-links">
+            <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="library.html" class="nav-link active"><i class="fa-solid fa-book-open"></i> Library</a>
+            <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+            <a href="people_progress.html" class="nav-link"><i class="fa-solid fa-users"></i> People</a>
+            <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+        </nav>
+    </aside>
+
+    <main class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title"><h1>Wisdom Sanctuary</h1></div>
+            <div class="header-actions">
+                <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+            </div>
+        </header>
+
+        <section class="hero-section">
+            <div class="hero-content">
+                <h2 class="hero-title">The Sanctuary</h2>
+                <p class="hero-subtitle">Wisdom for the Elite Mind</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <nav class="genre-tabs" id="tabNav">
+                <!-- Static Genre List -->
+                <button class="tab-btn active" onclick="switchGenre('MENTAL TOUGHNESS')">Mental Toughness</button>
+                <button class="tab-btn" onclick="switchGenre('PHYSICAL PEAK')">Physical Peak</button>
+                <button class="tab-btn" onclick="switchGenre('NUTRITION MASTERY')">Nutrition Mastery</button>
+                <button class="tab-btn" onclick="switchGenre('ANCIENT WISDOM')">Ancient Wisdom</button>
+                <button class="tab-btn" onclick="switchGenre('MODERN LEGENDS')">Modern Legends</button>
+            </nav>
+
+            <div class="stories-grid" id="storiesGrid">
+                <!-- Stories load here -->
+            </div>
+        </div>
+    </main>
+
+    <div class="reader-overlay" id="readerOverlay">
+        <button class="close-reader" onclick="closeReader()"><i class="fa-solid fa-arrow-left"></i> Return</button>
+        <div class="reader-content">
+            <span class="reader-genre" id="readerGenre">Category</span>
+            <h2 class="reader-title" id="readerTitle">Story Title</h2>
+            <div class="reader-text" id="readerText"></div>
+        </div>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="overlay" id="menuOverlay">
+        <button class="overlay-close" onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="overlay-grid">
+            <a href="home.html" class="overlay-card"><i class="fa-solid fa-house"></i><b>Home</b></a>
+            <a href="streak.html" class="overlay-card"><i class="fa-solid fa-trophy" style="color:var(--accent-gold)"></i><b>Achievements</b></a>
+            <a href="buddybot.html" class="overlay-card"><i class="fa-solid fa-robot"></i><b>Buddy Bot</b></a>
+            <a href="settings.html" class="overlay-card"><i class="fa-solid fa-cog"></i><b>Settings</b></a>
+        </div>
+    </div>
+
+    <script>
+        const libraryData = {
+            "MENTAL TOUGHNESS": [
+                { title: "The Stoic Archer", summary: "Mastering the art of internal focus in a world of external chaos.", text: "<p>In the quiet provinces of old Japan, there lived an archer whose arrows never missed. When asked his secret, he did not speak of bows or winds. He spoke of his heart.</p><p>'The target is not out there,' he whispered. 'The target is the trembling of your own hand. Silence the mind, and the arrow is already home.'</p><p>This story teaches us that true toughness is not about fighting the world, but about mastering the internal response to it. When your mind is a fortress, the external storms are merely background noise.</p>" },
+                { title: "The Fog of War", summary: "How clarity of purpose cuts through the most confusing moments of life.", text: "<p>Great leaders are not made in the sunlight; they are forged in the fog. Resilience is the ability to navigate when you cannot see more than a foot in front of you.</p><p>By sticking to a single, unmovable principle, the characters in this tale found their way home when everyone else was lost to panic. Clarity is the ultimate weapon of the mentally elite.</p>" },
+                { title: "The Last Rep", summary: "The psychology of the 1% and the threshold of real growth.", text: "<p>Growth does not happen in the comfort zone. It happens in the seconds when every cell in your body screams 'Stop', and your soul quietly says 'One more'.</p><p>That final moment of resistance is where the character is actually built. This story follows an athlete who learned that the 'wall' is not an end, but a door.</p>" },
+                { title: "Silicon Soul", summary: "A modern fable about maintaining humanity in a digital world.", text: "<p>In a world of notifications and noise, silence is the new luxury. This story explores how a tech genius regained his focus by embracing the discipline of disconnection.</p><p>Mental toughness today is the ability to ignore the infinite scrolls and focus on the finite depth of your own work.</p>" },
+                { title: "Frozen Focus", summary: "Building grit through the mastery of discomfort.", text: "<p>Ice contains a truth about life: it reveals who you are when you are uncomfortable. Through the lens of a cold-water survivalist, we learn that the body follows the mind, always.</p><p>If you can stay calm in the ice, you can stay calm in the fire of life.</p>" }
+            ],
+            "PHYSICAL PEAK": [
+                { title: "House of Iron", summary: "The temple where the body and spirit are physically forged.", text: "<p>The weights do not lie. They do not care about your excuses or your rank. In the House of Iron, we learn that physical peak is not a destination, but a daily ritual of respect for the machine we call a body.</p>" },
+                { title: "Oxygen Debt", summary: "Understanding the science and spirit of high-intensity performance.", text: "<p>There is a zone where breath becomes a luxury. This story explores the 'dark room' of intensity, where athletes find their true untapped potential by pushing past biological limits.</p>" },
+                { title: "The Body’s Clock", summary: "Mastering circadian rhythms for world-class energy levels.", text: "<p>Energy is the currency of achievement. By aligning your life with the sun and the stars, you unlock a level of vitality that feels like magic. This is the science of the biological elite.</p>" },
+                { title: "Gravity’s End", summary: "The perspective of a mountain climber on the weight of life.", text: "<p>To climb is to leave the weight of the world behind. But to reach the summit, you must carry your own weight perfectly. A story of balance and strength.</p>" },
+                { title: "Recovery Protocol", summary: "Why rest is the most active part of your training.", text: "<p>The master knows when to sleep. Muscles are broken in the gym, but they are built in the bed. Learn the art of strategic recovery for lifelong performance.</p>" }
+            ],
+            "NUTRITION MASTERY": [
+                { title: "The Clean Engine", summary: "Seeing your body as a hyper-car that requires premium fuel.", text: "<p>Would you put cheap oil into a Ferrari? Your body is more valuable than any car. This story reframes nutrition from a chore into a high-level engineering project.</p>" },
+                { title: "The Sugar Demon", summary: "A cinematic look at the war against hidden inflammation.", text: "<p>An internal battle between clarity and the fog produced by modern processing. Learn to identify the hidden enemies in your pantry.</p>" },
+                { title: "Liquid Gold", summary: "The often ignored power of hyper-hydration.", text: "<p>Water is the medium of life. Even a 2% drop in hydration leads to a 20% drop in performance. This is the manual for hydration mastery.</p>" },
+                { title: "The Fasting Sage", summary: "Clarity found in the absence of consumption.", text: "<p>The oldest medical intervention is simply to stop eating. Discover the ancient history and modern science of the focused fast.</p>" },
+                { title: "Soil to Soul", summary: "Why the quality of the earth defines the quality of your mind.", text: "<p>You are what you eat, but you are also what your food ate. A journey into nutrient density and agricultural truth.</p>" }
+            ],
+            "ANCIENT WISDOM": [
+                { title: "Spartan Discipline", summary: "Laws of the most fearsome warriors in human history.", text: "<p>The Spartans were not just soldiers; they were embodiments of an idea. Their training was hard so that their lives would be easier. Learn the 'Agoge' mindset for modern challenges.</p>" },
+                { title: "Samurai Stillness", summary: "Finding the center point in the middle of a sword fight.", text: "<p>Musashi spoke of the 'Void'. This story explains how to find total stillness in the middle of the fastest-moving events of your life.</p>" },
+                { title: "Rome’s Endurance", summary: "Building an empire one block at a time through consistency.", text: "<p>Rome wasn't built in a day, but it was built every single day. The power of the legionary was his ability to march further than anyone else.</p>" },
+                { title: "Desert Nomad's Peace", summary: "Survival and serenity in the harshest environments on earth.", text: "<p>The Bedouin knows secrets of conservation and peace. Learn to thrive with less, so that you can achieve more.</p>" },
+                { title: "Viking Grit", summary: "The mindset required to sail into the unknown without a map.", text: "<p>Confidence is the ability to trust yourself when there is no land in sight. A story of exploration and raw physical courage.</p>" }
+            ],
+            "MODERN LEGENDS": [
+                { title: "The 4-Minute Mile", summary: "Breaking the psychological barrier that stopped an entire world.", text: "<p>Before 1954, it was physically impossible. After Roger Bannister did it, hundreds followed. The barrier was in the mind, not the lungs.</p>" },
+                { title: "Iron Man’s Will", summary: "A story of a finish line that changed a life.", text: "<p>The grueling triathlon is a metaphor for the human spirit. Crossing the line isn't about the medal; it's about the version of yourself you became during the race.</p>" },
+                { title: "The Chess Master’s Void", summary: "Focus so deep that the world around you disappears.", text: "<p>Grandmasters move through a mental landscape more real than the physical world. Learn the secrets of 'Deep Work' through the lens of a genius.</p>" },
+                { title: "Space Bound", summary: "The discipline of the astronaut in the most hostile vacuum.", text: "<p>When failure is not an option, your checklist is your bible. Learn the high-stakes discipline of the final frontier.</p>" },
+                { title: "Solo Across the Sea", summary: "Fighting madness and waves alone for months.", text: "<p>The solo sailor's greatest enemy is his own mind. A story of isolation, self-reliance, and ultimate triumph over the horizon.</p>" }
+            ]
+        };
+
+        let activeGenre = "MENTAL TOUGHNESS";
+
+        function renderStories() {
+            const grid = document.getElementById('storiesGrid');
+            grid.innerHTML = '';
+            
+            libraryData[activeGenre].forEach(story => {
+                const card = document.createElement('div');
+                card.className = 'story-card';
+                card.onclick = () => openReader(story);
+                card.innerHTML = `
+                    <div class="card-header">
+                        <span class="card-category">${activeGenre}</span>
+                        <h3 class="card-title">${story.title}</h3>
+                    </div>
+                    <div class="card-body">${story.summary}</div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function switchGenre(genre) {
+            activeGenre = genre;
+            // Update UI buttons
+            const btns = document.querySelectorAll('.tab-btn');
+            btns.forEach(btn => {
+                btn.classList.toggle('active', btn.innerText.toUpperCase() === genre);
+            });
+            renderStories();
+        }
+
+        function openReader(story) {
+            document.getElementById('readerGenre').innerText = activeGenre;
+            document.getElementById('readerTitle').innerText = story.title;
+            document.getElementById('readerText').innerHTML = story.text;
+            document.getElementById('readerOverlay').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReader() {
+            document.getElementById('readerOverlay').classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function toggleMenu() { document.getElementById('menuOverlay').classList.toggle('active'); }
+
+        // Initial Load
+        window.onload = renderStories;
+    </script>
+</body>
+</html>
+
+</html>

@@ -1,0 +1,12 @@
+--- USER 15 INFO ---
+{'id': 15, 'full_name': 'chotu ga', 'email': 'kousikssvv34@gmail.com', 'password': 'scrypt:32768:8:1$AagyEbicp83rdVnj$6adda72bd43d37b8b30a4f8e8e3acdff3789d8e393a9001128941f163c0076da4aac08d5fce91801e81ead9848573b2153584020ecabb3447a8986129a844e1f', 'otp': None, 'otp_enquiry': None, 'otp_expiry': None}
+
+--- USER 15 GOALS ---
+Goal ID: 40, Habit ID: 101, Status: ACTIVE, Start Date: 2026-03-09
+
+--- USER 15 GOAL TRACKING ---
+Tracking rows count: 1
+{'id': 25, 'goal_id': 40, 'day_number': 1, 'completed': 1, 'completion_date': datetime.date(2026, 3, 9)}
+
+--- USER 15 PROGRESS ---
+{'user_id': 15, 'total_active_days': 0, 'total_points': 0, 'updated_at': datetime.datetime(2026, 3, 4, 17, 1, 54)}

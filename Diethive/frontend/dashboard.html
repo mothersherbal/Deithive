@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | DietHive</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .stats-hero {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: clamp(16px,2.5vw,30px);
+            margin-bottom: 40px;
+        }
+
+        .main-chart {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: clamp(20px,3vw,40px);
+            padding: clamp(20px,4vw,40px);
+            min-width: 0;
+            transition: all 0.4s var(--ease-lux);
+        }
+
+        .main-chart:hover {
+            border-color: var(--primary-glow);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .main-chart h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(18px,2.5vw,28px);
+            font-weight: 800;
+        }
+
+        .small-metrics {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(12px,2vw,20px);
+            min-width: 0;
+        }
+
+        .metric-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid var(--border);
+            border-radius: clamp(16px,2vw,25px);
+            padding: clamp(18px,3vw,35px);
+            text-align: center;
+        }
+
+        .metric-card .val {
+            font-family: 'Outfit', sans-serif;
+            font-size: clamp(32px,5vw,48px);
+            font-weight: 900;
+            margin: 8px 0;
+        }
+
+        .metric-card h4 {
+            font-size: clamp(10px,1.2vw,12px);
+            letter-spacing: 2px;
+        }
+
+        .metric-card p { font-size: clamp(12px,1.5vw,14px); font-weight: 800; margin: 0; }
+
+        .bar-container {
+            display: flex;
+            align-items: flex-end;
+            gap: clamp(8px,1.5vw,15px);
+            height: clamp(160px,22vw,250px);
+            margin-top: 28px;
+        }
+
+        .bar {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border-radius: 8px;
+            position: relative;
+            min-width: 0;
+        }
+
+        .bar-fill {
+            position: absolute;
+            bottom: 0; left: 0;
+            width: 100%;
+            border-radius: 8px;
+            background: linear-gradient(to top, var(--primary), var(--secondary));
+            animation: scaleUp 1s ease both;
+        }
+
+        @keyframes scaleUp { from { height: 0; } to { height: var(--h); } }
+
+        .bar-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 12px;
+            color: var(--text-dim);
+            font-weight: 700;
+            font-size: clamp(9px,1.2vw,12px);
+        }
+
+        @media (max-width: 768px) {
+            .stats-hero {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="logo"><i class="fa-solid fa-rocket" style="color:var(--primary)"></i> DietHive</div>
+            <nav class="nav-links">
+                <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="library.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Library</a>
+                <a href="dashboard.html" class="nav-link active"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="people_progress.html" class="nav-link"><i class="fa-solid fa-users"></i> People's Progress</a>
+                <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+            </nav>
+        </aside>
+
+        <section class="main-wrapper">
+            <header class="top-header">
+                <div class="header-title"><h1>DETAILED STATS</h1></div>
+                <div class="header-actions">
+                    <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </header>
+
+            <div class="container">
+                <section class="stats-hero">
+                    <div class="main-chart card">
+                        <div class="flex justify-between items-center" style="margin-bottom: 24px;">
+                            <div>
+                                <h3 style="font-family:'Outfit'; font-weight:900; font-size:var(--fs-lg);">Activity Progress</h3>
+                                <p style="font-size:var(--fs-xs); color:var(--text-dim); margin-top:2px;">Weekly performance tracking</p>
+                            </div>
+                            <div class="chart-legend flex gap-sm">
+                                <span style="font-size:12px; font-weight:700; color:var(--primary); display:flex; align-items:center; gap:4px;"><i class="fa-solid fa-circle" style="font-size:8px"></i> Active</span>
+                            </div>
+                        </div>
+                        <div style="position: relative; height: 300px; width: 100%;">
+                            <canvas id="activityChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="small-metrics">
+                        <div class="metric-card card">
+                            <h4 style="color:var(--text-dim);">TOTAL DAYS</h4>
+                            <div class="val" id="totalDays">—</div>
+                            <p style="color:var(--success)">Active streak</p>
+                        </div>
+                        <div class="metric-card card" style="background:linear-gradient(135deg, var(--primary), #6366f1); border:none; box-shadow: 0 10px 30px var(--primary-glow);">
+                            <h4 style="color:#fff; opacity:0.8">HABIT SCORE</h4>
+                            <div class="val" id="habitScore" style="color:#fff">—</div>
+                            <p style="color:#fff">Total Points</p>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </section>
+    </div>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Menu Overlay -->
+    <div class="overlay" id="menuOverlay">
+        <button style="position:fixed;top:clamp(20px,4vw,50px);right:clamp(20px,4vw,50px);background:rgba(255,255,255,0.1);border:none;width:60px;height:60px;border-radius:20px;color:#fff;cursor:pointer;font-size:26px;display:flex;align-items:center;justify-content:center;" onclick="toggleMenu()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="overlay-grid">
+            <a href="about.html" class="overlay-card"><i class="fa-solid fa-info-circle"></i><b>About</b></a>
+            <a href="streak.html" class="overlay-card"><i class="fa-solid fa-trophy" style="color:var(--warning)"></i><b>Trophy Room</b></a>
+            <a href="library.html" class="overlay-card"><i class="fa-solid fa-book-open"></i><b>Library</b></a>
+            <a href="buddybot.html" class="overlay-card"><i class="fa-solid fa-robot" style="color:var(--success)"></i><b>Buddy Bot</b></a>
+            <a href="people_progress.html" class="overlay-card"><i class="fa-solid fa-users" style="color:var(--secondary)"></i><b>People</b></a>
+            <a href="notifications.html" class="overlay-card"><i class="fa-solid fa-bell"></i><b>Notifications</b></a>
+            <a href="settings.html" class="overlay-card"><i class="fa-solid fa-cog"></i><b>Settings</b></a>
+        </div>
+    </div>
+
+    <!-- Mobile bottom nav -->
+    <nav class="mobile-nav">
+        <a href="home.html" class="mobile-nav-link"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="library.html" class="mobile-nav-link"><i class="fa-solid fa-book-open"></i><span>Library</span></a>
+        <a href="dashboard.html" class="mobile-nav-link active"><i class="fa-solid fa-chart-line"></i><span>Stats</span></a>
+        <a href="people_progress.html" class="mobile-nav-link"><i class="fa-solid fa-users"></i><span>People</span></a>
+        <a href="profile.html" class="mobile-nav-link"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </nav>
+
+    <script>
+        function toggleMenu() { document.getElementById('menuOverlay').classList.toggle('active'); }
+        const USER_ID = localStorage.getItem('user_id');
+        if (!USER_ID) { window.location.href = 'login.html'; }
+
+        let activityChart;
+
+        function initChart(dataValues) {
+            const ctx = document.getElementById('activityChart').getContext('2d');
+            
+            // Create Gradient
+            const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+            gradient.addColorStop(0, 'rgba(139, 92, 246, 0.3)');
+            gradient.addColorStop(1, 'rgba(139, 92, 246, 0)');
+
+            const labels = ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'];
+            
+            if (activityChart) activityChart.destroy();
+
+            activityChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Progress',
+                        data: dataValues,
+                        borderColor: '#8b5cf6',
+                        borderWidth: 4,
+                        backgroundColor: gradient,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: '#8b5cf6',
+                        pointBorderColor: 'rgba(255,255,255,0.8)',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: '#8b5cf6',
+                        pointHoverBorderWidth: 4,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(10, 15, 30, 0.9)',
+                            titleFont: { family: 'Outfit', size: 14, weight: 'bold' },
+                            bodyFont: { family: 'Inter', size: 13 },
+                            padding: 12,
+                            cornerRadius: 12,
+                            displayColors: false,
+                            callbacks: {
+                                label: (context) => ` Activity: ${context.raw}%`
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100,
+                            grid: { color: 'rgba(255,255,255,0.05)', drawBorder: false },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { family: 'Inter', size: 11, weight: 'bold' },
+                                callback: (val) => val + '%'
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#94a3b8',
+                                font: { family: 'Inter', size: 11, weight: '900' }
+                            }
+                        }
+                    },
+                    animations: {
+                        tension: {
+                            duration: 1000,
+                            easing: 'linear',
+                            from: 1,
+                            to: 0.4,
+                            loop: false
+                        }
+                    }
+                }
+            });
+        }
+
+        async function loadDashboard() {
+            try {
+                const res = await fetch(`/streak/analytics?user_id=${USER_ID}`);
+                const data = await res.json();
+                if (data.status === 'success') {
+                    document.getElementById('totalDays').textContent = data.total_active_days;
+                    document.getElementById('habitScore').textContent = data.total_points;
+
+                    const goalRes = await fetch(`/my-goals?user_id=${USER_ID}`);
+                    const goalData = await goalRes.json();
+                    
+                    let chartValues = [40, 60, 45, 70, 55, 85, 65]; // Default mock data
+                    
+                    if (goalData.status === 'success' && goalData.goals && goalData.goals.length > 0) {
+                        chartValues = [0, 0, 0, 0, 0, 0, 0].map((_, i) => {
+                            const dateObj = new Date(Date.now() - (6-i)*86400000);
+                            const dateStr = dateObj.toISOString().split('T')[0];
+                            
+                            const has = goalData.goals.some(g => {
+                                if (!g.tracking || !g.start_date) return false;
+                                const start = new Date(g.start_date);
+                                return g.tracking.some(t => {
+                                    if (!t.completed) return false;
+                                    const tDate = new Date(start.getTime() + (t.day_number - 1) * 86400000);
+                                    return tDate.toISOString().split('T')[0] === dateStr;
+                                });
+                            });
+                            
+                            return has ? Math.floor(Math.random() * 30) + 70 : Math.floor(Math.random() * 15) + 5;
+                        });
+                    }
+                    initChart(chartValues);
+                }
+            } catch(e) { 
+                console.error('Dashboard sync error', e);
+                initChart([35, 55, 42, 68, 52, 82, 72]); // Fallback mock
+            }
+        }
+        loadDashboard();
+
+    </script>
+</body>
+</html>

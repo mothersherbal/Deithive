@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Activate Goal | DietHive</title>
+  <link rel="stylesheet" href="global.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    .setup-card {
+      background: #fff;
+      color: #000;
+      padding: 80px;
+      border-radius: 40px;
+      box-shadow: 0 50px 100px rgba(0, 0, 0, 0.5);
+      max-width: 900px;
+      width: 100%;
+      margin: 60px auto;
+    }
+
+    .goal-indicator {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .goal-indicator i {
+      font-size: 48px;
+      color: var(--primary);
+    }
+
+    .goal-indicator h2 {
+      font-family: 'Outfit';
+      font-size: 56px;
+      font-weight: 950;
+      letter-spacing: -2px;
+    }
+
+    .form-row {
+      margin-bottom: 50px;
+    }
+
+    .form-row label {
+      display: block;
+      font-size: 14px;
+      font-weight: 900;
+      color: #666;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      letter-spacing: 2px;
+    }
+
+    .number-input {
+      width: 100%;
+      padding: 30px;
+      border: 2px solid #eee;
+      border-radius: 20px;
+      font-size: 32px;
+      font-weight: 800;
+      font-family: 'Outfit';
+    }
+
+    .number-input:focus {
+      border-color: var(--primary);
+      outline: none;
+    }
+
+    .option-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .opt-box {
+      padding: 30px;
+      border: 2px solid #eee;
+      border-radius: 20px;
+      text-align: center;
+      cursor: pointer;
+      transition: 0.3s;
+      font-weight: 800;
+      font-size: 18px;
+    }
+
+    .opt-box:hover,
+    .opt-box.active {
+      border-color: var(--primary);
+      background: rgba(139, 92, 246, 0.05);
+    }
+
+    .summary-box {
+      background: #f9f9f9;
+      padding: 40px;
+      border-radius: 25px;
+      margin-top: 50px;
+    }
+
+    .summary-box b {
+      color: var(--primary);
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body style="background: var(--bg-dark);">
+
+  <div class="app-layout">
+    <aside class="sidebar">
+      <div class="logo"><i class="fa-solid fa-rocket" style="color:var(--primary)"></i> DietHive</div>
+      <nav class="nav-links">
+        <a href="home.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="library.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Library</a>
+        <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+        <a href="people_progress.html" class="nav-link"><i class="fa-solid fa-users"></i> People's Progress</a>
+        <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+      </nav>
+    </aside>
+
+    <section class="main-wrapper">
+      <header class="top-header">
+        <div class="header-title">
+          <h1>INITIATE GOAL</h1>
+        </div>
+        <div class="header-actions">
+          <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+        </div>
+      </header>
+
+      <div class="container">
+        <div class="setup-card">
+          <div class="goal-indicator">
+            <i class="fa-solid fa-fire-flame-curved"></i>
+            <h2 id="goalName">Habit Selection</h2>
+          </div>
+
+          <div class="form-row">
+            <label>Daily Performance Target</label>
+            <input type="number" class="number-input" value="3" id="dailyVal">
+            <p style="margin-top:10px; font-weight:700; color:#888;">Measured in specific units for this goal.</p>
+          </div>
+
+          <div class="form-row">
+            <label>Challenge Duration</label>
+            <div class="option-grid">
+              <div class="opt-box active">7 DAYS</div>
+              <div class="opt-box">21 DAYS</div>
+              <div class="opt-box">90 DAYS</div>
+            </div>
+          </div>
+
+          <div class="summary-box">
+            <p style="font-size:18px; line-height:1.6; font-weight:600; color:#444;">
+              You are about to start a <b>High-Precision Cycle</b>.
+              Commitment is the only path to result.
+            </p>
+          </div>
+
+          <button class="btn-main" style="width:100%; margin-top:50px; padding:25px;" onclick="activate()">ACTIVATE
+            HABIT</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Menu Overlay -->
+  <div class="overlay" id="menuOverlay">
+    <button
+      style="position:fixed; top:50px; right:50px; background:rgba(255,255,255,0.1); border:none; width:70px; height:70px; border-radius:24px; color:#fff; cursor:pointer; font-size:30px;"
+      onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+    <div class="overlay-grid">
+      <a href="about.html" class="overlay-card"><i class="fa-solid fa-info-circle"></i><b>About App</b></a>
+      <a href="streak.html" class="overlay-card"><i class="fa-solid fa-trophy"
+          style="color:var(--warning)"></i><b>Trophy Room</b></a>
+      <a href="library.html" class="overlay-card"><i class="fa-solid fa-book-open"></i><b>Library</b></a>
+      <a href="buddybot.html" class="overlay-card"><i class="fa-solid fa-robot"
+          style="color:var(--success)"></i><b>Buddy Bot</b></a>
+      <a href="people_progress.html" class="overlay-card"><i class="fa-solid fa-users"
+          style="color:var(--secondary)"></i><b>People's Progress</b></a>
+      <a href="notifications.html" class="overlay-card"><i class="fa-solid fa-bell"></i><b>Notifications</b></a>
+      <a href="settings.html" class="overlay-card"><i class="fa-solid fa-cog"></i><b>Settings</b></a>
+    </div>
+  </div>
+
+  <script>
+    // Get Goal from URL
+    const params = new URLSearchParams(window.location.search);
+    const goalName = params.get('goal') || "Custom Habit";
+    const habitIDParam = params.get('habit_id');
+    document.getElementById('goalName').innerText = goalName;
+
+    // Hardcoded mapping for demonstration (Fallbacks)
+    const GOAL_MAPPING = {
+        "3L Water Intake": 1,
+        "Zero Sugar": 4, 
+        "Protein Focus": 13,
+        "Intermittent Fast": 16,
+        "10k Daily Steps": 27,
+        "Morning Yoga": 44,
+        "Deep Sleep": 52,
+        "Strength Training": 37,
+        "Digital Detox": 51,
+        "Daily Meditation": 49,
+        "Daily Gratitude": 50,
+        "Read 20 Pages": 53
+    };
+
+    let durationWeeks = 1;
+    const optBoxes = document.querySelectorAll('.opt-box');
+    optBoxes.forEach(box => {
+        box.onclick = () => {
+            optBoxes.forEach(b => b.classList.remove('active'));
+            box.classList.add('active');
+            durationWeeks = parseInt(box.innerText.split(' ')[0]) / 7;
+            if (durationWeeks < 1) durationWeeks = 1; 
+        };
+    });
+
+    function toggleMenu() { document.getElementById('menuOverlay').classList.toggle('active'); }
+
+    async function activate() {
+        const userID = localStorage.getItem('user_id');
+        if (!userID) {
+            alert("No user session. Please login.");
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const habitID = habitIDParam || GOAL_MAPPING[goalName] || 1; 
+        const marksPerDay = 10; 
+
+        try {
+            const res = await fetch('/goals/activate', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: userID,
+                    habit_id: habitID,
+                    marks_per_day: 10, // Default to 10 for consistency with points system
+                    duration_weeks: Math.max(1, Math.round(durationWeeks)),
+                    start_date: new Date().toLocaleDateString('sv-SE')
+                })
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                window.location.href = 'habits.html';
+            } else {
+                alert(data.message);
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Activation failed.");
+        }
+    }
+  </script>
+</body>
+
+</html>

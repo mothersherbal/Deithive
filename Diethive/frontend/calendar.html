@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Buddy Calendar - Track Your Timeline</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #4a90e2;
+            --bg: #fdfcf8;
+            --text: #2c3e50;
+            --surface: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Inter", sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            padding-bottom: 50px;
+        }
+
+        .header {
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: white;
+            border-bottom: 1px solid #efefef;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            color: #888;
+            font-size: 20px;
+        }
+
+        h1 {
+            font-size: 20px;
+            font-weight: 900;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* CALENDAR UI */
+        .calendar-card {
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+        }
+
+        .cal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+
+        .cal-day-label {
+            text-align: center;
+            font-size: 11px;
+            font-weight: 800;
+            color: #aaa;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+        }
+
+        .cal-date {
+            aspect-ratio: 1;
+            background: #f8fbff;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            position: relative;
+            border: 1px solid transparent;
+        }
+
+        .cal-date.today {
+            border-color: var(--primary);
+            background: #f0f7ff;
+            color: var(--primary);
+        }
+
+        .cal-date.has-goal {
+            background: #fffde7;
+        }
+
+        .cal-date.has-goal::after {
+            content: "";
+            position: absolute;
+            bottom: 8px;
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .goal-legend {
+            margin-top: 50px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px;
+            background: white;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            border: 1px solid #f0f4f8;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .legend-info h4 {
+            font-size: 15px;
+            font-weight: 800;
+        }
+
+        .legend-info p {
+            font-size: 13px;
+            color: #888;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+        <h1>Goal Calendar</h1>
+        <i class="fa-solid fa-rocket" style="color: var(--primary); font-size: 24px;"></i>
+    </header>
+
+    <div class="container">
+        <div class="calendar-card">
+            <div class="cal-header">
+                <h2 id="monthLabel">September 2026</h2>
+            </div>
+            <div class="cal-grid" id="calendarGrid">
+                <!-- Grid injected here -->
+            </div>
+        </div>
+
+        <div class="goal-legend">
+            <h3>Upcoming Submissions</h3>
+            <div id="legendList" style="margin-top: 20px;">
+                <!-- Legened injected here -->
+            </div>
+        </div>
+    </div>
+
+    <script src="buddy.js"></script>
+    <script>
+        const goals = JSON.parse(localStorage.getItem('myGoals') || '[]');
+        const grid = document.getElementById('calendarGrid');
+        const legend = document.getElementById('legendList');
+
+        function renderCalendar() {
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = now.getMonth();
+
+            document.getElementById('monthLabel').textContent = now.toLocaleDateString(undefined, { month: 'long', year: 'numeric' });
+
+            const firstDay = new Date(year, month, 1).getDay();
+            const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+            // Labels
+            const labels = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+            labels.forEach(l => {
+                const div = document.createElement('div');
+                div.className = 'cal-day-label';
+                div.textContent = l;
+                grid.appendChild(div);
+            });
+
+            // Padding
+            for (let i = 0; i < firstDay; i++) {
+                grid.appendChild(document.createElement('div'));
+            }
+
+            // Days
+            for (let day = 1; day <= daysInMonth; day++) {
+                const div = document.createElement('div');
+                div.className = 'cal-date';
+                div.textContent = day;
+
+                const dateStr = new Date(year, month, day).toLocaleDateString(undefined, { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+                if (day === now.getDate()) div.classList.add('today');
+
+                const dayGoals = goals.filter(g => g.endDate === dateStr);
+                if (dayGoals.length > 0) div.classList.add('has-goal');
+
+                grid.appendChild(div);
+            }
+
+            // Legends
+            if (goals.length === 0) {
+                legend.innerHTML = "<p style='color: #888;'>No upcoming goal submissions.</p>";
+            } else {
+                goals.forEach(g => {
+                    const item = document.createElement('div');
+                    item.className = 'legend-item';
+                    item.innerHTML = `
+                    <div class="legend-dot"></div>
+                    <div class="legend-info">
+                        <h4>${g.title}</h4>
+                        <p>Submission end: ${g.endDate}</p>
+                    </div>
+                `;
+                    legend.appendChild(item);
+                });
+            }
+        }
+
+        renderCalendar();
+        Buddy.speak("Check your timeline, buddy! Every day is a new victory waiting to happen.");
+    </script>
+</body>
+
+</html>

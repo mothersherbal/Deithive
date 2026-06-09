@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choose Goal | DietHive</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .goal-header {
+            margin-bottom: 60px;
+            text-align: center;
+        }
+
+        .goal-header h2 {
+            font-family: 'Outfit';
+            font-size: clamp(32px, 5vw, 56px);
+            font-weight: 950;
+            margin-bottom: 12px;
+            letter-spacing: -1px;
+        }
+
+        .goal-header p {
+            font-size: 18px;
+            color: var(--text-soft);
+            font-weight: 600;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .category-section {
+            margin-bottom: 80px;
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+
+        .category-header h3 {
+            font-family: 'Outfit';
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--primary);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            white-space: nowrap;
+        }
+
+        .category-line {
+            height: 1px;
+            flex: 1;
+            background: linear-gradient(90deg, var(--border), transparent);
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .goal-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border);
+            padding: 32px;
+            border-radius: 30px;
+            text-decoration: none;
+            color: #fff;
+            transition: all 0.4s var(--ease-lux);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .goal-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--primary-glow), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .goal-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.04);
+            border-color: var(--primary);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .goal-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .goal-card i {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: var(--primary);
+            transition: 0.4s;
+        }
+
+        .goal-card:hover i {
+            background: var(--primary);
+            color: #fff;
+            transform: rotate(-10deg) scale(1.1);
+            box-shadow: 0 0 20px var(--primary-glow);
+        }
+
+        .goal-title {
+            display: block;
+            font-size: 20px;
+            font-weight: 850;
+            margin-bottom: 6px;
+            font-family: 'Outfit';
+        }
+
+        .goal-desc {
+            font-size: 14px;
+            color: var(--text-dim);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="logo"><i class="fa-solid fa-rocket" style="color:var(--primary)"></i> DietHive</div>
+            <nav class="nav-links">
+                <a href="home.html" class="nav-link active"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="library.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Library</a>
+                <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="people_progress.html" class="nav-link"><i class="fa-solid fa-users"></i> People's Progress</a>
+                <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+            </nav>
+        </aside>
+
+        <section class="main-wrapper">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>HABIT SETUP</h1>
+                </div>
+                <div class="header-actions">
+                    <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="goal-header">
+                    <h2 class="text-gradient">Select Your Target</h2>
+                    <p>Choose a behavior protocol to synchronize with your lifestyle.</p>
+                </div>
+
+                <!-- Diet Goals -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <h3>Nutritional Status</h3>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="goals-grid">
+                        <a href="goalpage.html?habit_id=1&goal=3L+Water+Intake" class="goal-card">
+                            <i class="fa-solid fa-droplet"></i>
+                            <div>
+                                <b class="goal-title">3L Water Intake</b>
+                                <span class="goal-desc">Maintain optimal hydration and metabolic efficiency.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=4&goal=Zero+Sugar" class="goal-card">
+                            <i class="fa-solid fa-leaf"></i>
+                            <div>
+                                <b class="goal-title">Zero Sugar</b>
+                                <span class="goal-desc">Eliminate refined sweeteners and stabilize glucose.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=13&goal=Protein+Focus" class="goal-card">
+                            <i class="fa-solid fa-egg"></i>
+                            <div>
+                                <b class="goal-title">Protein Focus</b>
+                                <span class="goal-desc">Achieve your 150g daily target for peak recovery.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=16&goal=Intermittent+Fast" class="goal-card">
+                            <i class="fa-solid fa-clock"></i>
+                            <div>
+                                <b class="goal-title">Intermittent Fast</b>
+                                <span class="goal-desc">Follow the 16:8 protocol for cellular autophagy.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Activity Goals -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <h3>Performance Nodes</h3>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="goals-grid">
+                        <a href="goalpage.html?habit_id=27&goal=10k+Daily+Steps" class="goal-card">
+                            <i class="fa-solid fa-shoe-prints"></i>
+                            <div>
+                                <b class="goal-title">10k Daily Steps</b>
+                                <span class="goal-desc">Maintain consistent basal activity and thermogenesis.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=44&goal=Morning+Yoga" class="goal-card">
+                            <i class="fa-solid fa-person-rays"></i>
+                            <div>
+                                <b class="goal-title">Morning Yoga</b>
+                                <span class="goal-desc">Enahcned flexibility and neurological focus.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=52&goal=Deep+Sleep" class="goal-card">
+                            <i class="fa-solid fa-moon"></i>
+                            <div>
+                                <b class="goal-title">Deep Sleep</b>
+                                <span class="goal-desc">Optimize 8 hours of restorative deep-cycle sleep.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=37&goal=Strength+Training" class="goal-card">
+                            <i class="fa-solid fa-dumbbell"></i>
+                            <div>
+                                <b class="goal-title">Strength Training</b>
+                                <span class="goal-desc">Build core power through resistant loading.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Mental & Focus Goals -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <h3>Mental Synchronicity</h3>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="goals-grid">
+                        <a href="goalpage.html?habit_id=51&goal=Digital+Detox" class="goal-card">
+                            <i class="fa-solid fa-mobile-screen"></i>
+                            <div>
+                                <b class="goal-title">Digital Detox</b>
+                                <span class="goal-desc">Disconnect from neural stimulation 1h before rest.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=49&goal=Daily+Meditation" class="goal-card">
+                            <i class="fa-solid fa-head-side-pulse"></i>
+                            <div>
+                                <b class="goal-title">Daily Meditation</b>
+                                <span class="goal-desc">15 minutes of mindfulness to recalibrate the psyche.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=28&goal=Focus+Blocks" class="goal-card">
+                            <i class="fa-solid fa-stopwatch"></i>
+                            <div>
+                                <b class="goal-title">Focus Blocks</b>
+                                <span class="goal-desc">High-bandwidth Pomodoro productivity sprints.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?habit_id=50&goal=Daily+Gratitude" class="goal-card">
+                            <i class="fa-solid fa-heart"></i>
+                            <div>
+                                <b class="goal-title">Daily Gratitude</b>
+                                <span class="goal-desc">Journal 3 significant anchors for positive framing.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Learning Goals -->
+                <div class="category-section">
+                    <div class="category-header">
+                        <h3>Skill Acquisition</h3>
+                        <div class="category-line"></div>
+                    </div>
+                    <div class="goals-grid">
+                        <a href="goalpage.html?habit_id=53&goal=Read+20+Pages" class="goal-card">
+                            <i class="fa-solid fa-book-open"></i>
+                            <div>
+                                <b class="goal-title">Read 20 Pages</b>
+                                <span class="goal-desc">Maintain continuous intellectual growth and learning.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?goal=Code+Practice" class="goal-card">
+                            <i class="fa-solid fa-laptop-code"></i>
+                            <div>
+                                <b class="goal-title">Code Practice</b>
+                                <span class="goal-desc">1 hour of dedicated logic implementation.</span>
+                            </div>
+                        </a>
+                        <a href="goalpage.html?goal=Learn+Language" class="goal-card">
+                            <i class="fa-solid fa-language"></i>
+                            <div>
+                                <b class="goal-title">Learn Language</b>
+                                <span class="goal-desc">Daily vocabulary sync for multilingual fluency.</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="overlay" id="menuOverlay">
+        <button
+            style="position:fixed; top:50px; right:50px; background:rgba(255,255,255,0.1); border:none; width:70px; height:70px; border-radius:24px; color:#fff; cursor:pointer; font-size:30px;"
+            onclick="toggleMenu()"><i class="fa-solid fa-xmark"></i></button>
+        <div class="overlay-grid">
+            <a href="about.html" class="overlay-card"><i class="fa-solid fa-info-circle"></i><b>About App</b></a>
+            <a href="streak.html" class="overlay-card"><i class="fa-solid fa-trophy"
+                    style="color:var(--warning)"></i><b>Trophy Room</b></a>
+            <a href="library.html" class="overlay-card"><i class="fa-solid fa-book-open"></i><b>Library</b></a>
+            <a href="buddybot.html" class="overlay-card"><i class="fa-solid fa-robot"
+                    style="color:var(--success)"></i><b>Buddy Bot</b></a>
+            <a href="people_progress.html" class="overlay-card"><i class="fa-solid fa-users"
+                    style="color:var(--secondary)"></i><b>People's Progress</b></a>
+            <a href="notifications.html" class="overlay-card"><i class="fa-solid fa-bell"></i><b>Notifications</b></a>
+            <a href="settings.html" class="overlay-card"><i class="fa-solid fa-cog"></i><b>Settings</b></a>
+        </div>
+    </div>
+
+    <script>
+        function toggleMenu() { document.getElementById('menuOverlay').classList.toggle('active'); }
+    </script>
+</body>
+
+</html>

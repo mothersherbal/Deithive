@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community | Buddy</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .community-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .community-header i {
+            font-size: 60px;
+            color: var(--accent);
+            margin-bottom: 15px;
+        }
+
+        .community-header h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .community-header p {
+            font-size: 14px;
+            max-width: 300px;
+            margin: 0 auto;
+        }
+
+        .user-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .person-card {
+            padding: 20px;
+        }
+
+        .person-top {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .person-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background: rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .person-info h3 {
+            font-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .person-info .focus {
+            font-size: 12px;
+            color: var(--secondary);
+            font-weight: 700;
+        }
+
+        .person-info .active-time {
+            font-size: 11px;
+            color: var(--text-soft);
+        }
+
+        .person-streak {
+            margin-left: auto;
+            text-align: center;
+        }
+
+        .person-streak i {
+            color: var(--secondary);
+            display: block;
+            margin-bottom: 2px;
+        }
+
+        .person-streak span {
+            font-size: 10px;
+            font-weight: 800;
+        }
+
+        .person-bio {
+            font-size: 13px;
+            line-height: 1.5;
+            margin-bottom: 20px;
+        }
+
+        .progress-wrap {
+            margin-bottom: 15px;
+        }
+
+        .p-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 800;
+            margin-bottom: 8px;
+        }
+
+        .p-bar-bg {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+        }
+
+        .p-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .person-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .footer-stats {
+            display: flex;
+            gap: 10px;
+        }
+
+        .f-stat {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 6px 10px;
+            border-radius: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .f-stat i {
+            font-size: 10px;
+        }
+
+        .view-journey {
+            font-size: 11px;
+            font-weight: 800;
+            color: var(--text-soft);
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container fade-in">
+        <header class="header">
+            <a href="home.html" class="back-btn"><i class="fa-solid fa-arrow-left"></i></a>
+            <h1>People's Progress</h1>
+            <div style="width: 40px;"></div>
+        </header>
+
+        <div class="community-header">
+            <i class="fa-solid fa-users"></i>
+            <h2>The Hive Community</h2>
+            <p>Tap on anyone's profile to see their full journey — challenges, buddy motivation, and favorite library
+                reads.</p>
+        </div>
+
+        <div class="user-list">
+            <!-- User 1 -->
+            <div class="card person-card">
+                <div class="person-top">
+                    <div class="person-avatar">🧘</div>
+                    <div class="person-info">
+                        <h3>Aarav Sharma</h3>
+                        <span class="focus">Mindfulness</span>
+                        <div class="active-time">Active 6 weeks ago - 6 weeks</div>
+                    </div>
+                    <div class="person-streak">
+                        <i class="fa-solid fa-star"></i>
+                        <span>15d</span>
+                    </div>
+                </div>
+                <p class="person-bio">Focused on mental clarity and vegan diet. Pushing limits every single day!</p>
+                <div class="progress-wrap">
+                    <div class="p-label"><span>Progress</span> <span>85%</span></div>
+                    <div class="p-bar-bg">
+                        <div class="p-bar-fill" style="width: 85%; background: #6366f1;"></div>
+                    </div>
+                </div>
+                <div class="person-footer">
+                    <div class="footer-stats">
+                        <div class="f-stat"><i class="fa-solid fa-check" style="color: #6366f1;"></i> 42 Goals</div>
+                        <div class="f-stat"><i class="fa-solid fa-star" style="color: var(--secondary);"></i> 1840 pts
+                        </div>
+                    </div>
+                    <a href="#" class="view-journey">View Journey →</a>
+                </div>
+            </div>
+
+            <!-- User 2 -->
+            <div class="card person-card">
+                <div class="person-top">
+                    <div class="person-avatar">🥗</div>
+                    <div class="person-info">
+                        <h3>Sarah Jenkins</h3>
+                        <span class="focus">Weight Loss</span>
+                        <div class="active-time">Active 4 weeks ago - 4 weeks</div>
+                    </div>
+                    <div class="person-streak">
+                        <i class="fa-solid fa-star"></i>
+                        <span>8d</span>
+                    </div>
+                </div>
+                <p class="person-bio">Losing 10kg with Keto. The journey is hard but the results are worth it!</p>
+                <div class="progress-wrap">
+                    <div class="p-label"><span>Progress</span> <span>65%</span></div>
+                    <div class="p-bar-bg">
+                        <div class="p-bar-fill" style="width: 65%; background: #2dd4bf;"></div>
+                    </div>
+                </div>
+                <div class="person-footer">
+                    <div class="footer-stats">
+                        <div class="f-stat"><i class="fa-solid fa-check" style="color: #2dd4bf;"></i> 28 Goals</div>
+                        <div class="f-stat"><i class="fa-solid fa-star" style="color: var(--secondary);"></i> 1120 pts
+                        </div>
+                    </div>
+                    <a href="#" class="view-journey">View Journey →</a>
+                </div>
+            </div>
+
+            <!-- User 3 -->
+            <div class="card person-card">
+                <div class="person-top">
+                    <div class="person-avatar">🏃</div>
+                    <div class="person-info">
+                        <h3>Michael Chen</h3>
+                        <span class="focus">Fitness</span>
+                        <div class="active-time">Active 3 weeks ago - 3 weeks</div>
+                    </div>
+                    <div class="person-streak">
+                        <i class="fa-solid fa-star" style="color: #8b5cf6;"></i>
+                        <span>22d</span>
+                    </div>
+                </div>
+                <p class="person-bio">Marathon training and high protein diet. Consistency is key.</p>
+                <div class="progress-wrap">
+                    <div class="p-label"><span>Progress</span> <span>45%</span></div>
+                    <div class="p-bar-bg">
+                        <div class="p-bar-fill" style="width: 45%; background: #fb7185;"></div>
+                    </div>
+                </div>
+                <div class="person-footer">
+                    <div class="footer-stats">
+                        <div class="f-stat"><i class="fa-solid fa-check" style="color: #fb7185;"></i> 15 Goals</div>
+                        <div class="f-stat"><i class="fa-solid fa-star" style="color: var(--secondary);"></i> 760 pts
+                        </div>
+                    </div>
+                    <a href="#" class="view-journey">View Journey →</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav class="bottom-nav">
+        <a href="home.html" class="nav-item">
+            <i class="fa-solid fa-house"></i>
+            <span>Home</span>
+        </a>
+        <a href="library.html" class="nav-item">
+            <i class="fa-solid fa-book-open"></i>
+            <span>Library</span>
+        </a>
+        <a href="dashboard.html" class="nav-item">
+            <i class="fa-solid fa-chart-simple"></i>
+            <span>Dashboard</span>
+        </a>
+        <a href="progress.html" class="nav-item">
+            <i class="fa-solid fa-arrow-trend-up"></i>
+            <span>Progress</span>
+        </a>
+        <a href="profile.html" class="nav-item active">
+            <i class="fa-solid fa-user"></i>
+            <span>Profile</span>
+        </a>
+    </nav>
+
+    <img src="https://emojicdn.elk.sh/🐝?style=apple" class="buddy-float">
+
+</body>
+
+</html>

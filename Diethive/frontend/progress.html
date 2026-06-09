@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Progress Tracking | Hive Console</title>
+    <link rel="stylesheet" href="global.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+        <aside class="sidebar">
+            <div class="sidebar-logo"><i class="fa-solid fa-rocket"></i></div>
+            <nav class="nav-links">
+                <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i><span>Home</span></a>
+                <a href="library.html" class="nav-link"><i class="fa-solid fa-book-open"></i><span>Library</span></a>
+                <a href="dashboard.html" class="nav-link"><i
+                        class="fa-solid fa-chart-simple"></i><span>Dashboard</span></a>
+                <a href="progress.html" class="nav-link active"><i
+                        class="fa-solid fa-arrow-trend-up"></i><span>Progress</span></a>
+            </nav>
+            <div class="sidebar-footer">
+                <a href="profile.html" class="nav-link"><i class="fa-solid fa-circle-user"></i><span>Profile</span></a>
+            </div>
+        </aside>
+
+        <main class="main-wrapper">
+            <header class="top-header">
+                <div class="header-title">
+                    <h1>PROGRESS LOG</h1>
+                </div>
+                <div class="header-actions">
+                    <div class="notification-trigger" onclick="window.location.href='notifications.html'"><i
+                            class="fa-solid fa-bell"></i>
+                        <div class="notification-dot"></div>
+                    </div>
+                    <div class="bee-logo-container" id="menuTrigger"><img src="diethive_bee_logo_1773055236604.png"
+                            alt="DietHive Bee"></div>
+                </div>
+            </header>
+
+            <div class="menu-overlay" id="menuOverlay">
+                <div class="menu-content">
+                    <i class="fa-solid fa-xmark menu-close" id="menuClose"></i>
+                    <div class="menu-header">
+                        <div class="menu-avatar-large">😊</div>
+                        <h2>DietHive Menu</h2>
+                        <p>Your journey tools</p>
+                    </div>
+                    <div class="menu-list">
+                        <a href="about.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #ec4899, #be185d);"><i
+                                    class="fa-solid fa-info-circle"></i></div><span class="menu-item-text">About</span>
+                        </a>
+                        <a href="streak.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #f59e0b, #d97706);"><i
+                                    class="fa-solid fa-star"></i></div><span class="menu-item-text">My Streak</span>
+                        </a>
+                        <a href="library.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #64748b, #475569);"><i
+                                    class="fa-solid fa-bars"></i></div><span class="menu-item-text">The Library</span>
+                        </a>
+                        <a href="buddy_status.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #f97316, #ea580c);"><i
+                                    class="fa-solid fa-user-circle"></i></div><span class="menu-item-text">Buddy
+                                Status</span>
+                        </a>
+                        <a href="buddybot.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #0ea5e9, #0284c7);"><i
+                                    class="fa-solid fa-user"></i></div><span class="menu-item-text">Buddy Bot</span>
+                        </a>
+                        <a href="progress.html" class="menu-item">
+                            <div class="menu-icon-box" style="background: linear-gradient(135deg, #a855f7, #7e22ce);"><i
+                                    class="fa-solid fa-users"></i></div><span class="menu-item-text">People's
+                                Progress</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <section class="content-area fade-in">
+                <div class="card" style="margin-bottom: 30px; border-left: 4px solid var(--secondary);">
+                    <h2 style="font-family: 'Outfit'; margin-bottom: 20px;">Habit Milestones</h2>
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-weight: 700;">Day 1: Genesis</span>
+                            <span style="color: #22c55e; font-weight: 800;"><i class="fa-solid fa-check-circle"></i>
+                                COMPLETED</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-weight: 700;">Day 7: Calibration</span>
+                            <span style="color: #22c55e; font-weight: 800;"><i class="fa-solid fa-check-circle"></i>
+                                COMPLETED</span>
+                        </div>
+                        <div style="display: flex; align-items: center; justify-content: space-between;">
+                            <span style="font-weight: 700;">Day 30: Transcendence</span>
+                            <span style="color: var(--text-muted); font-weight: 800;">LOCKED</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="status-bar">
+                <div class="status-indicator">
+                    <div class="dot"></div> PROGRESS VECTOR CALCULATED
+                </div>
+                <div>ESTIMATED EVOLUTION: 14 DAYS</div>
+            </footer>
+        </main>
+    </div>
+
+    <script>
+        const trigger = document.getElementById('menuTrigger');
+        const overlay = document.getElementById('menuOverlay');
+        const closeBtn = document.getElementById('menuClose');
+        trigger.addEventListener('click', () => overlay.classList.add('active'));
+        closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+        overlay.addEventListener('click', (e) => { if (e.target === overlay) overlay.classList.remove('active'); });
+    </script>
+</body>
+
+</html>

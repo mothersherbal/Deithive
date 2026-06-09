@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup Quest with Fixed Calendar</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+
+  <style>
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:"Inter",sans-serif;
+    }
+
+    :root{
+      --bg:#eef7ff;
+      --surface:#ffffff;
+      --surface-2:#f2f8ff;
+      --primary:#3b82f6;
+      --primary-dark:#2563eb;
+      --sky:#38bdf8;
+      --text:#10243e;
+      --text-soft:#5d7495;
+      --text-faint:#92a6c2;
+      --border:#d8e8fb;
+      --shadow:0 16px 40px rgba(59,130,246,0.10);
+      --shadow-soft:0 10px 24px rgba(56,189,248,0.10);
+      --yellow:#fbbf24;
+      --green:#10b981;
+    }
+
+    body{
+      background:linear-gradient(180deg,#f5fbff 0%,#eaf6ff 100%);
+      color:var(--text);
+      min-height:100vh;
+      overflow-x:hidden;
+    }
+
+    button,input{
+      font:inherit;
+    }
+
+    .app{
+      min-height:100vh;
+      display:flex;
+    }
+
+    .sidebar{
+      width:92px;
+      background:linear-gradient(180deg,#38bdf8 0%, #3b82f6 100%);
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      padding:22px 0;
+      gap:16px;
+      position:sticky;
+      top:0;
+      height:100vh;
+      box-shadow:8px 0 24px rgba(59,130,246,0.12);
+      flex-shrink:0;
+    }
+
+    .side-logo{
+      width:50px;
+      height:50px;
+      border-radius:16px;
+      background:rgba(255,255,255,0.18);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:21px;
+      margin-bottom:6px;
+    }
+
+    .side-btn{
+      width:56px;
+      height:56px;
+      border:none;
+      border-radius:18px;
+      background:transparent;
+      color:rgba(255,255,255,0.78);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      cursor:pointer;
+      transition:.2s ease;
+    }
+
+    .side-btn.active{
+      background:#fff;
+      color:var(--primary);
+      box-shadow:var(--shadow-soft);
+    }
+
+    .side-bottom{
+      margin-top:auto;
+    }
+
+    .avatar{
+      width:48px;
+      height:48px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.20);
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      border:2px solid rgba(255,255,255,0.24);
+    }
+
+    .main{
+      flex:1;
+      padding:24px;
+      min-width:0;
+    }
+
+    .shell{
+      min-height:calc(100vh - 48px);
+      background:rgba(255,255,255,0.55);
+      border:1px solid rgba(255,255,255,0.9);
+      border-radius:32px;
+      box-shadow:var(--shadow);
+      overflow:hidden;
+      display:flex;
+      flex-direction:column;
+    }
+
+    .topbar{
+      background:linear-gradient(180deg,#ffffff 0%,#f7fbff 100%);
+      border-bottom:1px solid var(--border);
+      padding:20px 26px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+    }
+
+    .brand h1{
+      font-size:22px;
+      font-weight:900;
+      color:var(--primary-dark);
+    }
+
+    .content{
+      padding:28px;
+      background:linear-gradient(180deg,#f8fcff 0%,#eef7ff 100%);
+      flex:1;
+    }
+
+    .custom-date{
+      max-width:420px;
+      min-height:98px;
+      border-radius:24px;
+      background:linear-gradient(180deg,#eaf7ff 0%,#dff2ff 100%);
+      border:1px solid #cfe7ff;
+      display:flex;
+      align-items:center;
+      gap:18px;
+      padding:20px 22px;
+      cursor:pointer;
+      box-shadow:var(--shadow-soft);
+      transition:.2s ease;
+    }
+
+    .custom-date:hover{
+      transform:translateY(-1px);
+    }
+
+    .calendar-icon{
+      width:56px;
+      height:56px;
+      border-radius:18px;
+      background:#fff;
+      color:var(--primary-dark);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:22px;
+      flex-shrink:0;
+      border:1px solid var(--border);
+    }
+
+    .custom-title{
+      font-size:18px;
+      font-weight:900;
+      color:var(--text);
+      margin-bottom:6px;
+    }
+
+    .custom-sub{
+      font-size:15px;
+      color:var(--text-soft);
+    }
+
+    .activate{
+      margin-top:28px;
+      width:320px;
+      max-width:100%;
+      height:64px;
+      border:none;
+      border-radius:22px;
+      background:linear-gradient(90deg,#38bdf8,#60a5fa);
+      color:#fff;
+      font-size:18px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    /* FIXED CALENDAR MODAL */
+    .calendar-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,0.42);
+      backdrop-filter:blur(6px);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+      z-index:100;
+    }
+
+    .calendar-overlay.show{
+      display:flex;
+    }
+
+    .calendar-modal{
+      width:min(900px, 100%);
+      max-height:calc(100vh - 40px);
+      overflow:auto;
+      background:linear-gradient(180deg,#f8fdff 0%,#edf8ff 100%);
+      border:1px solid #d4ebff;
+      border-radius:28px;
+      box-shadow:0 28px 60px rgba(15,23,42,0.18);
+      padding:24px 28px 22px;
+    }
+
+    .calendar-modal::-webkit-scrollbar{
+      width:8px;
+    }
+
+    .calendar-modal::-webkit-scrollbar-thumb{
+      background:#cddff7;
+      border-radius:999px;
+    }
+
+    .calendar-head{
+      text-align:center;
+      margin-bottom:14px;
+    }
+
+    .calendar-title{
+      font-size:26px;
+      font-weight:900;
+      color:var(--text);
+      margin-bottom:8px;
+    }
+
+    .calendar-sub{
+      color:var(--text-soft);
+      font-size:16px;
+      line-height:1.4;
+    }
+
+    .month-bar{
+      display:grid;
+      grid-template-columns:56px 1fr 56px;
+      align-items:center;
+      gap:18px;
+      margin:18px 0 16px;
+    }
+
+    .month-btn{
+      width:56px;
+      height:56px;
+      border:none;
+      border-radius:50%;
+      background:#fff;
+      border:1px solid var(--border);
+      color:var(--primary-dark);
+      font-size:22px;
+      cursor:pointer;
+      box-shadow:var(--shadow-soft);
+    }
+
+    .month-title{
+      text-align:center;
+      font-size:22px;
+      font-weight:900;
+      color:var(--text);
+    }
+
+    .weekdays{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:12px;
+      margin:6px 0 14px;
+    }
+
+    .weekday{
+      text-align:center;
+      color:#06b6d4;
+      font-weight:800;
+      font-size:16px;
+      padding:6px 0;
+    }
+
+    .days-grid{
+      display:grid;
+      grid-template-columns:repeat(7,1fr);
+      gap:14px;
+      margin-bottom:22px;
+    }
+
+    .day{
+      width:100%;
+      aspect-ratio:1/1;
+      border-radius:50%;
+      border:1.5px solid #c9def5;
+      background:transparent;
+      color:#7f93b0;
+      font-size:22px;
+      font-weight:800;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      cursor:pointer;
+      transition:.2s ease;
+      user-select:none;
+    }
+
+    .day:hover{
+      background:#eef8ff;
+      color:var(--primary-dark);
+      border-color:#a8d8ff;
+    }
+
+    .day.muted{
+      opacity:.35;
+      pointer-events:none;
+    }
+
+    .day.selected{
+      background:linear-gradient(180deg,#ffe37c 0%, #fbbf24 100%);
+      color:#fff;
+      border-color:#fbbf24;
+      box-shadow:0 10px 24px rgba(251,191,36,0.28);
+    }
+
+    .calendar-actions{
+      display:flex;
+      justify-content:center;
+      gap:18px;
+      flex-wrap:wrap;
+      margin-top:8px;
+    }
+
+    .cal-btn{
+      min-width:220px;
+      height:60px;
+      border-radius:20px;
+      font-size:18px;
+      font-weight:900;
+      cursor:pointer;
+    }
+
+    .cal-btn.cancel{
+      background:#fff;
+      color:#64748b;
+      border:1px solid var(--border);
+    }
+
+    .cal-btn.confirm{
+      background:linear-gradient(90deg,#38bdf8,#60a5fa);
+      color:#fff;
+      border:none;
+      box-shadow:var(--shadow-soft);
+    }
+
+    @media (max-width: 900px){
+      .days-grid{
+        gap:10px;
+      }
+
+      .day{
+        font-size:20px;
+      }
+    }
+
+    @media (max-width: 700px){
+      .app{
+        flex-direction:column;
+      }
+
+      .sidebar{
+        position:relative;
+        width:100%;
+        height:auto;
+        flex-direction:row;
+        justify-content:space-between;
+        padding:14px 18px;
+      }
+
+      .main{
+        padding:10px;
+      }
+
+      .content,.topbar{
+        padding:18px;
+      }
+
+      .calendar-overlay{
+        padding:10px;
+        align-items:flex-start;
+      }
+
+      .calendar-modal{
+        width:100%;
+        max-height:calc(100vh - 20px);
+        border-radius:24px;
+        padding:18px 16px 18px;
+      }
+
+      .calendar-title{
+        font-size:22px;
+      }
+
+      .calendar-sub{
+        font-size:14px;
+      }
+
+      .month-bar{
+        grid-template-columns:48px 1fr 48px;
+        gap:10px;
+        margin:14px 0 12px;
+      }
+
+      .month-btn{
+        width:48px;
+        height:48px;
+        font-size:18px;
+      }
+
+      .month-title{
+        font-size:18px;
+      }
+
+      .weekdays{
+        gap:6px;
+        margin-bottom:10px;
+      }
+
+      .weekday{
+        font-size:13px;
+      }
+
+      .days-grid{
+        gap:8px;
+      }
+
+      .day{
+        font-size:18px;
+      }
+
+      .calendar-actions{
+        flex-direction:column;
+        gap:12px;
+      }
+
+      .cal-btn{
+        width:100%;
+        min-width:0;
+        height:54px;
+        font-size:16px;
+      }
+    }
+
+    @media (max-width: 420px){
+      .day{
+        font-size:16px;
+      }
+
+      .weekday{
+        font-size:12px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="side-logo"><i class="fa-solid fa-table-cells-large"></i></div>
+      <button class="side-btn"><i class="fa-solid fa-house"></i></button>
+      <button class="side-btn"><i class="fa-solid fa-book-open"></i></button>
+      <button class="side-btn"><i class="fa-solid fa-chart-line"></i></button>
+      <button class="side-btn active"><i class="fa-solid fa-calendar-days"></i></button>
+      <div class="side-bottom">
+        <div class="avatar"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="shell">
+        <header class="topbar">
+          <div class="brand">
+            <h1>BUDDY CONSOLE</h1>
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="custom-date" id="openCalendar">
+            <div class="calendar-icon"><i class="fa-solid fa-calendar-days"></i></div>
+            <div>
+              <div class="custom-title">Custom Date Range</div>
+              <div class="custom-sub">Choose your own end date</div>
+            </div>
+          </div>
+
+          <button class="activate">Activate Quest</button>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div class="calendar-overlay" id="calendarOverlay">
+    <div class="calendar-modal">
+      <div class="calendar-head">
+        <div class="calendar-title">Choose End Date</div>
+        <div class="calendar-sub">Select when you want to complete this goal</div>
+      </div>
+
+      <div class="month-bar">
+        <button class="month-btn" id="prevMonth"><i class="fa-solid fa-arrow-left"></i></button>
+        <div class="month-title" id="monthTitle">February 2026</div>
+        <button class="month-btn" id="nextMonth"><i class="fa-solid fa-arrow-right"></i></button>
+      </div>
+
+      <div class="weekdays">
+        <div class="weekday">Sun</div>
+        <div class="weekday">Mon</div>
+        <div class="weekday">Tue</div>
+        <div class="weekday">Wed</div>
+        <div class="weekday">Thu</div>
+        <div class="weekday">Fri</div>
+        <div class="weekday">Sat</div>
+      </div>
+
+      <div class="days-grid" id="daysGrid"></div>
+
+      <div class="calendar-actions">
+        <button class="cal-btn cancel" id="cancelCalendar">Cancel</button>
+        <button class="cal-btn confirm" id="confirmCalendar">Confirm</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const calendarOverlay = document.getElementById("calendarOverlay");
+    const openCalendar = document.getElementById("openCalendar");
+    const cancelCalendar = document.getElementById("cancelCalendar");
+    const confirmCalendar = document.getElementById("confirmCalendar");
+    const prevMonth = document.getElementById("prevMonth");
+    const nextMonth = document.getElementById("nextMonth");
+    const monthTitle = document.getElementById("monthTitle");
+    const daysGrid = document.getElementById("daysGrid");
+
+    const fixedStartDate = new Date(2026, 1, 25);
+    let currentMonth = fixedStartDate.getMonth();
+    let currentYear = fixedStartDate.getFullYear();
+    let tempSelectedDate = new Date(2026, 1, 26);
+
+    function renderCalendar(month, year){
+      daysGrid.innerHTML = "";
+      const firstDay = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      monthTitle.textContent = new Date(year, month).toLocaleDateString("en-US", {
+        month: "long",
+        year: "numeric"
+      });
+
+      for(let i = 0; i < firstDay; i++){
+        const empty = document.createElement("div");
+        daysGrid.appendChild(empty);
+      }
+
+      for(let day = 1; day <= totalDays; day++){
+        const btn = document.createElement("button");
+        btn.className = "day";
+        btn.textContent = day;
+
+        const fullDate = new Date(year, month, day);
+
+        if(fullDate < fixedStartDate){
+          btn.classList.add("muted");
+        }
+
+        if(
+          tempSelectedDate &&
+          fullDate.getDate() === tempSelectedDate.getDate() &&
+          fullDate.getMonth() === tempSelectedDate.getMonth() &&
+          fullDate.getFullYear() === tempSelectedDate.getFullYear()
+        ){
+          btn.classList.add("selected");
+        }
+
+        btn.addEventListener("click", () => {
+          if(fullDate < fixedStartDate) return;
+          tempSelectedDate = new Date(year, month, day);
+          renderCalendar(currentMonth, currentYear);
+        });
+
+        daysGrid.appendChild(btn);
+      }
+    }
+
+    openCalendar.addEventListener("click", () => {
+      calendarOverlay.classList.add("show");
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    cancelCalendar.addEventListener("click", () => {
+      calendarOverlay.classList.remove("show");
+    });
+
+    confirmCalendar.addEventListener("click", () => {
+      alert("Selected date: " + tempSelectedDate.toDateString());
+      calendarOverlay.classList.remove("show");
+    });
+
+    prevMonth.addEventListener("click", () => {
+      currentMonth--;
+      if(currentMonth < 0){
+        currentMonth = 11;
+        currentYear--;
+      }
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    nextMonth.addEventListener("click", () => {
+      currentMonth++;
+      if(currentMonth > 11){
+        currentMonth = 0;
+        currentYear++;
+      }
+      renderCalendar(currentMonth, currentYear);
+    });
+
+    calendarOverlay.addEventListener("click", (e) => {
+      if(e.target === calendarOverlay){
+        calendarOverlay.classList.remove("show");
+      }
+    });
+  </script>
+</body>
+</html>

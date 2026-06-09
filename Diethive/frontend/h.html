@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Buddy Console - Setup Quest</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Inter", sans-serif;
+    }
+
+    :root {
+      --bg: #eef4ff;
+      --bg-soft: #f7faff;
+      --surface: #ffffff;
+      --surface-2: #f3f7ff;
+      --sidebar: #2c56d8;
+      --sidebar-dark: #2349be;
+      --primary: #2b52d6;
+      --primary-dark: #2348c4;
+      --primary-soft: #e9efff;
+      --text: #102143;
+      --text-soft: #5f7198;
+      --text-faint: #8fa0c4;
+      --border: #dbe4ff;
+      --shadow: 0 16px 40px rgba(43, 82, 214, 0.10);
+      --shadow-soft: 0 10px 24px rgba(43, 82, 214, 0.08);
+      --green: #1ecf8d;
+      --cyan: #18b9d6;
+      --yellow: #ffc928;
+      --yellow-dark: #c88e00;
+      --pink: #d66cff;
+      --purple: #8d6bff;
+      --danger: #ff6b6b;
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --radius-sm: 12px;
+    }
+
+    body {
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top left, rgba(43, 82, 214, 0.10), transparent 28%),
+        linear-gradient(180deg, #f5f8ff 0%, #eaf1ff 100%);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: 96px;
+      background: linear-gradient(180deg, var(--sidebar) 0%, var(--sidebar-dark) 100%);
+      border-right: 1px solid rgba(255, 255, 255, 0.12);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 24px 0;
+      gap: 18px;
+      box-shadow: 8px 0 28px rgba(43, 82, 214, 0.10);
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      z-index: 20;
+      flex-shrink: 0;
+    }
+
+    .side-logo {
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+      background: rgba(255, 255, 255, 0.14);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 8px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.10);
+    }
+
+    .side-nav {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      margin-top: 8px;
+    }
+
+    .side-btn {
+      width: 58px;
+      height: 58px;
+      border: none;
+      border-radius: 18px;
+      background: transparent;
+      color: rgba(255, 255, 255, 0.72);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      cursor: pointer;
+      transition: 0.22s ease;
+    }
+
+    .side-btn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+      transform: translateY(-1px);
+    }
+
+    .side-btn.active {
+      background: #ffffff;
+      color: var(--primary);
+      box-shadow: 0 14px 30px rgba(0, 0, 0, 0.12);
+    }
+
+    .side-bottom {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .avatar-pill {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: #fff3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 18px;
+      border: 2px solid rgba(255, 255, 255, 0.2);
+    }
+
+    /* MAIN */
+    .main {
+      flex: 1;
+      padding: 28px;
+      min-width: 0;
+    }
+
+    .shell {
+      background: rgba(255, 255, 255, 0.40);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 32px;
+      min-height: calc(100vh - 56px);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* TOPBAR */
+    .topbar {
+      background: linear-gradient(180deg, #ffffff 0%, #f7faff 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      min-width: 220px;
+    }
+
+    .brand h1 {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .brand span {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-faint);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .search-box {
+      width: 420px;
+      max-width: 48vw;
+      height: 52px;
+      border-radius: 16px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 16px;
+    }
+
+    .search-box i {
+      color: var(--text-faint);
+      font-size: 16px;
+    }
+
+    .search-box input {
+      width: 100%;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: var(--text);
+      font-size: 15px;
+    }
+
+    .search-box input::placeholder {
+      color: var(--text-faint);
+    }
+
+    .notify {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .notify::after {
+      content: "";
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #ff4aa5;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding-left: 10px;
+    }
+
+    .user-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), #5f83ff);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .user-info {
+      line-height: 1.1;
+    }
+
+    .user-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .user-role {
+      font-size: 12px;
+      letter-spacing: 1px;
+      color: var(--text-faint);
+      margin-top: 4px;
+      font-weight: 700;
+    }
+
+    /* CONTENT */
+    .content {
+      padding: 28px;
+      background: linear-gradient(180deg, #f7faff 0%, #eef4ff 100%);
+      flex: 1;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 22px;
+    }
+
+    .head-left {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+    }
+
+    .back-btn {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      background: #fff;
+      color: var(--primary);
+      cursor: pointer;
+      box-shadow: var(--shadow-soft);
+      flex-shrink: 0;
+    }
+
+    .page-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .page-subtitle {
+      color: var(--text-soft);
+      font-size: 15px;
+      line-height: 1.45;
+    }
+
+    .quest-layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.9fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .card {
+      background: linear-gradient(180deg, #ffffff 0%, #f9fbff 100%);
+      border: 1px solid var(--border);
+      border-radius: 26px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .left-card {
+      padding: 26px;
+    }
+
+    .summary-card {
+      padding: 22px;
+      position: sticky;
+      top: 20px;
+    }
+
+    .assistant-box {
+      display: flex;
+      align-items: flex-start;
+      gap: 18px;
+      background: linear-gradient(180deg, #f7faff 0%, #edf3ff 100%);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 18px;
+      margin-bottom: 24px;
+    }
+
+    .assistant-face {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: #ffd900;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 34px;
+      flex-shrink: 0;
+      box-shadow: 0 12px 24px rgba(255, 217, 0, 0.18);
+    }
+
+    .assistant-bubble {
+      flex: 1;
+      background: linear-gradient(180deg, #435474 0%, #374865 100%);
+      color: #fff;
+      border-radius: 22px;
+      padding: 18px 20px;
+      font-size: 18px;
+      font-style: italic;
+      font-weight: 700;
+      line-height: 1.6;
+      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.10);
+    }
+
+    .section {
+      margin-top: 22px;
+    }
+
+    .section-label {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      color: #7a8cb7;
+    }
+
+    .section-label.highlight {
+      color: var(--yellow-dark);
+    }
+
+    .input-card {
+      height: 92px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #233653 0%, #1f2f49 100%);
+      border: 1px solid rgba(35, 60, 95, 0.22);
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 0 24px;
+      color: #fff;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .input-card i {
+      color: #17c1ef;
+      font-size: 24px;
+    }
+
+    .input-card input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      color: #fff;
+      font-size: 18px;
+      font-weight: 600;
+    }
+
+    .input-card input::placeholder {
+      color: rgba(255, 255, 255, 0.58);
+    }
+
+    .option-grid {
+      display: grid;
+      gap: 14px;
+    }
+
+    .marks-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .duration-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .option-btn {
+      min-height: 78px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, #223754 0%, #1d2f47 100%);
+      color: rgba(255, 255, 255, 0.72);
+      font-size: 18px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .option-btn:hover {
+      transform: translateY(-1px);
+    }
+
+    .option-btn.selected {
+      background: linear-gradient(180deg, #564e35 0%, #49442f 100%);
+      border: 2px solid var(--yellow);
+      color: #ffda32;
+      box-shadow: 0 10px 24px rgba(255, 201, 40, 0.10);
+    }
+
+    .option-btn.selected i {
+      margin-right: 8px;
+    }
+
+    .custom-date-card {
+      min-height: 102px;
+      border-radius: 24px;
+      background: linear-gradient(180deg, #223754 0%, #1e3049 100%);
+      border: 1px solid rgba(35, 60, 95, 0.22);
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      padding: 20px 22px;
+      cursor: pointer;
+      transition: 0.2s ease;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .custom-date-card:hover {
+      transform: translateY(-1px);
+    }
+
+    .date-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      flex-shrink: 0;
+    }
+
+    .custom-date-title {
+      color: #fff;
+      font-size: 18px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .custom-date-sub {
+      color: rgba(255, 255, 255, 0.60);
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .summary-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .star-box {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: #fff4cd;
+      color: #e1ad00;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .summary-reward {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-soft);
+      line-height: 1.4;
+    }
+
+    .summary-reward strong {
+      color: #d2a000;
+      font-size: 18px;
+    }
+
+    .timeline-card {
+      border-radius: 24px;
+      background: linear-gradient(180deg, #233653 0%, #1f2f49 100%);
+      padding: 24px;
+      color: #fff;
+      margin-top: 14px;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .timeline-top {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: end;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .mini-label {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(255, 255, 255, 0.56);
+      margin-bottom: 8px;
+    }
+
+    .date-big {
+      font-size: 28px;
+      font-weight: 900;
+      line-height: 1;
+    }
+
+    .days-center {
+      text-align: center;
+      color: #26d4ff;
+      font-size: 18px;
+      font-weight: 900;
+      align-self: center;
+    }
+
+    .timeline-line {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+    }
+
+    .dot.left {
+      background: #29d3ff;
+      box-shadow: 0 0 10px rgba(41, 211, 255, 0.4);
+    }
+
+    .dot.right {
+      background: #ff7ec5;
+      box-shadow: 0 0 10px rgba(255, 126, 197, 0.4);
+    }
+
+    .line {
+      flex: 1;
+      height: 4px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #29d3ff, #ff7ec5);
+    }
+
+    .activate-btn {
+      margin-top: 26px;
+      width: 100%;
+      height: 70px;
+      border: none;
+      border-radius: 24px;
+      background: linear-gradient(90deg, #6e6cff, #9a63ff);
+      color: #fff;
+      font-size: 18px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 18px 40px rgba(118, 96, 255, 0.20);
+      transition: 0.2s ease;
+    }
+
+    .activate-btn:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.03);
+    }
+
+    .helper-note {
+      margin-top: 12px;
+      color: var(--text-faint);
+      font-size: 13px;
+      line-height: 1.45;
+      text-align: center;
+    }
+
+    .bottom-bar {
+      padding: 18px 28px;
+      border-top: 1px solid var(--border);
+      background: #ffffffd9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      color: var(--text-soft);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .status .online {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .status .dot-status {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 10px rgba(30, 207, 141, 0.45);
+    }
+
+    .build {
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 1px;
+      color: var(--text-faint);
+    }
+
+    @media (max-width: 1200px) {
+      .quest-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .summary-card {
+        position: static;
+      }
+    }
+
+    @media (max-width: 920px) {
+      .sidebar {
+        width: 78px;
+      }
+
+      .main {
+        padding: 16px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .topbar-right {
+        width: 100%;
+        justify-content: space-between;
+      }
+
+      .search-box {
+        width: 100%;
+        max-width: none;
+        flex: 1;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .app {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        justify-content: space-between;
+        padding: 14px 18px;
+      }
+
+      .side-nav,
+      .side-bottom {
+        flex-direction: row;
+        margin-top: 0;
+      }
+
+      .main {
+        padding: 10px;
+      }
+
+      .content,
+      .topbar,
+      .bottom-bar {
+        padding: 18px;
+      }
+
+      .marks-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .duration-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .assistant-box {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .timeline-top {
+        grid-template-columns: 1fr;
+      }
+
+      .days-center {
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="side-logo">
+        <i class="fa-solid fa-table-cells-large"></i>
+      </div>
+
+      <div class="side-nav">
+        <button class="side-btn"><i class="fa-solid fa-house"></i></button>
+        <button class="side-btn"><i class="fa-solid fa-book-open"></i></button>
+        <button class="side-btn"><i class="fa-solid fa-chart-line"></i></button>
+        <button class="side-btn active"><i class="fa-solid fa-gear"></i></button>
+      </div>
+
+      <div class="side-bottom">
+        <div class="avatar-pill"><i class="fa-solid fa-user"></i></div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="shell">
+        <header class="topbar">
+          <div class="brand">
+            <h1>BUDDY CONSOLE</h1>
+            <span>V2.0</span>
+          </div>
+
+          <div class="topbar-right">
+            <div class="search-box">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <input type="text" placeholder="Search data..." />
+            </div>
+
+            <div class="notify">
+              <i class="fa-solid fa-bell"></i>
+            </div>
+
+            <div class="user">
+              <div class="user-avatar">AR</div>
+              <div class="user-info">
+                <div class="user-name">Alex Rivera</div>
+                <div class="user-role">MASTER</div>
+              </div>
+            </div>
+          </div>
+        </header>
+
+        <section class="content">
+          <div class="page-head">
+            <div class="head-left">
+              <button class="back-btn" id="backBtn">
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+
+              <div>
+                <div class="page-title">Setup Quest</div>
+                <div class="page-subtitle">Set your quest title, marks, duration, and activate your challenge.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="quest-layout">
+            <!-- LEFT -->
+            <div class="card left-card">
+              <div class="assistant-box">
+                <div class="assistant-face">😐</div>
+                <div class="assistant-bubble">
+                  “Hey competitor! Set your terms.<br>
+                  How many marks will this be worth?”
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-label">Quest Title</div>
+                <div class="input-card">
+                  <i class="fa-solid fa-pen"></i>
+                  <input id="questTitle" type="text" value="3L Water Daily" placeholder="Enter quest title">
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-label highlight">Marks Per Day</div>
+                <div class="option-grid marks-grid" id="marksGrid">
+                  <button class="option-btn" data-marks="10">+10</button>
+                  <button class="option-btn selected" data-marks="20">+20</button>
+                  <button class="option-btn" data-marks="50">+50</button>
+                  <button class="option-btn" data-marks="100">+100</button>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="section-label">Duration</div>
+                <div class="option-grid duration-grid" id="durationGrid">
+                  <button class="option-btn" data-days="7">1 Week</button>
+                  <button class="option-btn selected" data-days="14"><i class="fa-solid fa-check"></i> 2 Weeks</button>
+                  <button class="option-btn" data-days="21">3 Weeks</button>
+                </div>
+              </div>
+
+              <div class="section">
+                <div class="custom-date-card" id="customDateCard">
+                  <div class="date-icon">
+                    <i class="fa-solid fa-calendar-days"></i>
+                  </div>
+                  <div>
+                    <div class="custom-date-title">Custom Date Range</div>
+                    <div class="custom-date-sub">Choose your own start and end date</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT -->
+            <div class="card summary-card">
+              <div class="section-label">Quest Summary</div>
+
+              <div class="summary-top">
+                <div class="star-box">
+                  <i class="fa-solid fa-star"></i>
+                </div>
+                <div class="summary-reward">
+                  Total Potential Rewards: <strong id="rewardText">280 Marks</strong>
+                </div>
+              </div>
+
+              <div class="timeline-card">
+                <div class="timeline-top">
+                  <div>
+                    <div class="mini-label">Start</div>
+                    <div class="date-big" id="startDateText">Feb 25</div>
+                  </div>
+
+                  <div class="days-center" id="daysText">14 Days</div>
+
+                  <div style="text-align:right;">
+                    <div class="mini-label">Finish</div>
+                    <div class="date-big" id="finishDateText">Mar 11</div>
+                  </div>
+                </div>
+
+                <div class="timeline-line">
+                  <div class="dot left"></div>
+                  <div class="line"></div>
+                  <div class="dot right"></div>
+                </div>
+              </div>
+
+              <button class="activate-btn" id="activateBtn">Activate Quest</button>
+              <div class="helper-note">
+                Review your selections before activating the quest.
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <footer class="bottom-bar">
+          <div class="status">
+            <div class="online">
+              <span class="dot-status"></span>
+              <span>SYSTEM ONLINE</span>
+            </div>
+            <div>SYNCING TO CLOUD...</div>
+          </div>
+
+          <div class="build">BUILD: 0.9.4-ALPHA</div>
+        </footer>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const marksButtons = document.querySelectorAll("#marksGrid .option-btn");
+    const durationButtons = document.querySelectorAll("#durationGrid .option-btn");
+    const rewardText = document.getElementById("rewardText");
+    const daysText = document.getElementById("daysText");
+    const startDateText = document.getElementById("startDateText");
+    const finishDateText = document.getElementById("finishDateText");
+    const activateBtn = document.getElementById("activateBtn");
+    const questTitle = document.getElementById("questTitle");
+    const customDateCard = document.getElementById("customDateCard");
+    const backBtn = document.getElementById("backBtn");
+
+    let selectedMarks = 20;
+    let selectedDays = 14;
+    let customStart = null;
+    let customEnd = null;
+
+    function formatDate(date) {
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric"
+      });
+    }
+
+    function updateSummary() {
+      const today = customStart ? new Date(customStart) : new Date();
+      const end = customEnd ? new Date(customEnd) : new Date(today.getTime() + (selectedDays * 24 * 60 * 60 * 1000));
+
+      let totalDays;
+      if (customStart && customEnd) {
+        totalDays = Math.round((end - today) / (1000 * 60 * 60 * 24));
+      } else {
+        totalDays = selectedDays;
+      }
+
+      if (totalDays < 1) totalDays = 1;
+
+      const rewards = selectedMarks * totalDays;
+
+      rewardText.textContent = `${rewards} Marks`;
+      daysText.textContent = `${totalDays} Days`;
+      startDateText.textContent = formatDate(today);
+      finishDateText.textContent = formatDate(end);
+    }
+
+    marksButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        marksButtons.forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        selectedMarks = Number(btn.dataset.marks);
+        updateSummary();
+      });
+    });
+
+    durationButtons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        durationButtons.forEach(b => {
+          b.classList.remove("selected");
+          b.innerHTML = b.textContent;
+        });
+
+        btn.classList.add("selected");
+        btn.innerHTML = `<i class="fa-solid fa-check"></i> ${btn.textContent}`;
+        selectedDays = Number(btn.dataset.days);
+
+        customStart = null;
+        customEnd = null;
+        updateSummary();
+      });
+    });
+
+    customDateCard.addEventListener("click", () => {
+      const start = prompt("Enter start date (YYYY-MM-DD):", "2025-02-25");
+      if (!start) return;
+
+      const end = prompt("Enter end date (YYYY-MM-DD):", "2025-03-11");
+      if (!end) return;
+
+      customStart = start;
+      customEnd = end;
+      updateSummary();
+    });
+
+    activateBtn.addEventListener("click", () => {
+      const title = questTitle.value.trim();
+      if (!title) {
+        alert("Please enter a quest title.");
+        questTitle.focus();
+        return;
+      }
+
+      alert(
+        `Quest Activated!\n\nTitle: ${title}\nMarks Per Day: ${selectedMarks}\nDuration: ${daysText.textContent}\nReward: ${rewardText.textContent}`
+      );
+    });
+
+    backBtn.addEventListener("click", () => {
+      alert("Back clicked");
+    });
+
+    updateSummary();
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>People's Progress | DietHive</title>
+    <meta name="description" content="See fellow DietHive members' live progress and cheer them on.">
+    <link rel="stylesheet" href="global.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        .page-header { margin-bottom: 40px; }
+
+        .page-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 48px;
+            font-weight: 950;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #fff 40%, var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 17px;
+            color: var(--text-soft);
+            font-weight: 600;
+            max-width: 580px;
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        /* ── Live badge ── */
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(244,63,94,0.1);
+            border: 1px solid rgba(244,63,94,0.28);
+            color: #f43f5e;
+            font-size: 11px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 5px 14px;
+            border-radius: 100px;
+            margin-bottom: 16px;
+        }
+
+        .live-dot {
+            width: 7px; height: 7px;
+            border-radius: 50%;
+            background: #f43f5e;
+            animation: livePulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes livePulse {
+            0%,100% { opacity:1; transform:scale(1); }
+            50%      { opacity:0.4; transform:scale(0.7); }
+        }
+
+        /* ── Grid ── */
+        .community-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 26px;
+        }
+
+        /* ── Profile Card ── */
+        .profile-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 30px;
+            padding: 30px 26px 22px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            cursor: default;
+            transition: transform 0.4s cubic-bezier(.175,.885,.32,1.275),
+                        border-color 0.3s, box-shadow 0.4s;
+        }
+
+        .profile-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 140px;
+            background: linear-gradient(135deg,
+                rgba(139,92,246,0.13) 0%,
+                rgba(14,165,233,0.06) 60%,
+                transparent 100%);
+            z-index: 0;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .profile-card:hover {
+            transform: translateY(-8px) scale(1.012);
+            border-color: rgba(139,92,246,0.45);
+            box-shadow: 0 22px 48px rgba(0,0,0,0.45),
+                        0 0 0 1px rgba(139,92,246,0.18),
+                        0 0 55px rgba(139,92,246,0.07);
+        }
+
+        .profile-card:hover::before { opacity: 1; }
+
+        /* ── Profile header row ── */
+        .profile-header {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* ── Animated avatar wrapper ── */
+        .avatar-wrap {
+            position: relative;
+            width: 86px;
+            height: 86px;
+            flex-shrink: 0;
+        }
+
+        /* Outer dashed orbit ring + revolving dot */
+        .avatar-orbit-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 110px; height: 110px;
+            border-radius: 50%;
+            border: 1.5px dashed rgba(139,92,246,0.3);
+            transform: translate(-50%,-50%);
+            animation: orbitSpin 10s linear infinite;
+        }
+
+        .avatar-orbit-ring::after {
+            content: '';
+            position: absolute;
+            top: -5px; left: 50%;
+            transform: translateX(-50%);
+            width: 10px; height: 10px;
+            border-radius: 50%;
+            background: radial-gradient(circle, #c4b5fd, #7c3aed);
+            box-shadow: 0 0 10px #8b5cf6, 0 0 20px rgba(139,92,246,0.6);
+        }
+
+        @keyframes orbitSpin {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(360deg); }
+        }
+
+        /* Spinning rainbow glow ring */
+        .avatar-glow-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%,-50%);
+            width: 86px; height: 86px;
+            border-radius: 50%;
+            padding: 3px;
+            background: conic-gradient(
+                from 0deg,
+                #7c3aed 0deg, #a855f7 60deg,
+                #06b6d4 120deg, #10b981 200deg,
+                #f59e0b 270deg, #ec4899 330deg,
+                #7c3aed 360deg
+            );
+            animation: spinRing 5s linear infinite;
+            box-shadow: 0 0 18px rgba(139,92,246,0.55),
+                        0 0 36px rgba(139,92,246,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes spinRing {
+            from { transform: translate(-50%,-50%) rotate(0deg); }
+            to   { transform: translate(-50%,-50%) rotate(360deg); }
+        }
+
+        .avatar-inner-circle {
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            overflow: hidden;
+            background: linear-gradient(145deg, #0d1330, #0a0f1e);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar-inner-circle img {
+            width: 100%; height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            transition: transform 0.4s ease;
+        }
+
+        .profile-card:hover .avatar-inner-circle img { transform: scale(1.08); }
+
+        /* Online dot */
+        .status-dot {
+            position: absolute;
+            bottom: 4px; right: 4px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: #10b981;
+            border: 2.5px solid #0a0f1e;
+            box-shadow: 0 0 10px rgba(16,185,129,0.9);
+            animation: onlinePulse 2s ease-in-out infinite;
+            z-index: 10;
+        }
+
+        @keyframes onlinePulse {
+            0%,100% { box-shadow: 0 0 6px rgba(16,185,129,0.8); }
+            50%      { box-shadow: 0 0 16px rgba(16,185,129,1), 0 0 28px rgba(16,185,129,0.4); }
+        }
+
+        /* Gold level badge */
+        .avatar-level {
+            position: absolute;
+            top: -2px; left: -2px;
+            width: 24px; height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f59e0b, #d97706);
+            border: 2px solid #0a0f1e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 7px;
+            font-weight: 900;
+            color: #fff;
+            box-shadow: 0 0 10px rgba(245,158,11,0.7);
+            z-index: 10;
+        }
+
+        /* Floating mini-particles */
+        .avatar-particle {
+            position: absolute;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: particleRise linear infinite;
+        }
+        @keyframes particleRise {
+            0%   { opacity: 0; transform: translateY(0) scale(0.5); }
+            20%  { opacity: 1; }
+            100% { opacity: 0; transform: translateY(-44px) scale(1.3); }
+        }
+
+        /* User info */
+        .user-info { flex: 1; min-width: 0; }
+        .user-info h3 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 19px;
+            font-weight: 800;
+            color: #fff;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .user-info p {
+            font-size: 11px;
+            color: var(--primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        /* Activity chips */
+        .user-chips { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+        .chip {
+            font-size: 10px; font-weight: 800;
+            padding: 3px 9px; border-radius: 100px;
+            letter-spacing: 0.3px;
+        }
+        .chip-green  { background: rgba(16,185,129,0.12);  color: #10b981; }
+        .chip-purple { background: rgba(139,92,246,0.12);  color: #a78bfa; }
+        .chip-amber  { background: rgba(245,158,11,0.12);  color: #f59e0b; }
+
+        /* Goal section */
+        .goal-section {
+            background: rgba(0,0,0,0.2);
+            border-radius: 20px;
+            padding: 17px;
+            position: relative;
+            z-index: 1;
+            border: 1px solid rgba(255,255,255,0.04);
+        }
+
+        .goal-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 13px;
+            gap: 8px;
+        }
+
+        .goal-name {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #fff;
+            min-width: 0;
+        }
+        .goal-name i { color: var(--secondary); font-size: 15px; flex-shrink: 0; }
+
+        .goal-streak {
+            background: rgba(245,158,11,0.1);
+            color: var(--warning);
+            padding: 5px 11px;
+            border-radius: 100px;
+            font-size: 11px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            border: 1px solid rgba(245,158,11,0.2);
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .progress-bar-container {
+            width: 100%; height: 7px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 100px;
+            overflow: hidden;
+            margin-bottom: 8px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 100px;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            box-shadow: 0 0 8px var(--primary-glow);
+            transition: width 1.2s cubic-bezier(0.22,1,0.36,1);
+            width: 0%;
+        }
+
+        .progress-stats {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-dim);
+        }
+
+        /* Cheer button */
+        .cheer-btn {
+            background: rgba(255,255,255,0.04);
+            border: 1px solid rgba(255,255,255,0.09);
+            color: #fff;
+            padding: 12px;
+            border-radius: 16px;
+            font-weight: 700;
+            font-size: 14px;
+            cursor: pointer;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            position: relative;
+            z-index: 1;
+            font-family: 'Inter', sans-serif;
+            width: 100%;
+        }
+        .cheer-btn:hover {
+            background: rgba(244,63,94,0.1);
+            color: var(--accent);
+            border-color: rgba(244,63,94,0.3);
+            transform: scale(1.02);
+        }
+        .cheer-btn.cheered {
+            background: var(--accent);
+            color: #fff;
+            border-color: var(--accent);
+            box-shadow: 0 4px 20px rgba(244,63,94,0.45);
+        }
+
+        /* Card entrance */
+        @keyframes cardSlideIn {
+            from { opacity: 0; transform: translateY(28px) scale(0.97); }
+            to   { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @media (max-width: 768px) {
+            .page-header h2 { font-size: 30px; }
+            .community-grid { grid-template-columns: 1fr; gap: 18px; }
+            .profile-card   { padding: 22px 16px 18px; }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="app-layout">
+        <aside class="sidebar">
+            <div class="logo"><i class="fa-solid fa-rocket" style="color:var(--primary)"></i> DietHive</div>
+            <nav class="nav-links">
+                <a href="home.html" class="nav-link"><i class="fa-solid fa-house"></i> Home</a>
+                <a href="library.html" class="nav-link"><i class="fa-solid fa-book-open"></i> Library</a>
+                <a href="dashboard.html" class="nav-link"><i class="fa-solid fa-chart-line"></i> Dashboard</a>
+                <a href="people_progress.html" class="nav-link active"><i class="fa-solid fa-users"></i> People's Progress</a>
+                <a href="profile.html" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+            </nav>
+        </aside>
+
+        <section class="main-wrapper">
+            <header class="top-header">
+                <div class="header-title"><h1>COMMUNITY HUB</h1></div>
+                <div class="header-actions">
+                    <button class="menu-trigger" onclick="toggleMenu()"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </header>
+
+            <div class="container">
+                <div class="page-header">
+                    <div class="live-badge"><span class="live-dot"></span> Live</div>
+                    <h2>Live Synchronizations</h2>
+                    <p>Observe the progress of fellow Architects in the network. Draw inspiration from their consistency.</p>
+                </div>
+                <div class="community-grid" id="communityGrid"></div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Overlay -->
+    <div class="overlay" id="menuOverlay">
+        <button style="position:fixed;top:50px;right:50px;background:rgba(255,255,255,0.1);border:none;width:70px;height:70px;border-radius:24px;color:#fff;cursor:pointer;font-size:30px;display:flex;align-items:center;justify-content:center;" onclick="toggleMenu()">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <div class="overlay-grid">
+            <a href="about.html" class="overlay-card"><i class="fa-solid fa-info-circle"></i><b>About App</b></a>
+            <a href="streak.html" class="overlay-card"><i class="fa-solid fa-trophy" style="color:var(--warning)"></i><b>Trophy Room</b></a>
+            <a href="library.html" class="overlay-card"><i class="fa-solid fa-book-open"></i><b>Library</b></a>
+            <a href="buddybot.html" class="overlay-card"><i class="fa-solid fa-robot" style="color:var(--success)"></i><b>Buddy Bot</b></a>
+            <a href="people_progress.html" class="overlay-card active"><i class="fa-solid fa-users" style="color:var(--secondary)"></i><b>People's Progress</b></a>
+            <a href="notifications.html" class="overlay-card"><i class="fa-solid fa-bell"></i><b>Notifications</b></a>
+            <a href="settings.html" class="overlay-card"><i class="fa-solid fa-cog"></i><b>Settings</b></a>
+        </div>
+    </div>
+
+    <script src="buddy.js"></script>
+    <script>
+        function toggleMenu() { document.getElementById('menuOverlay').classList.toggle('active'); }
+
+        const USER_ID = localStorage.getItem('user_id');
+        if (!USER_ID) { window.location.href = 'login.html'; }
+
+        /* ── Pixar avatar pool (same as profile page) ── */
+        const PIXAR_AVATARS = [
+            '/avatars/avatar_m1.png', '/avatars/avatar_f1.png',
+            '/avatars/avatar_m2.png', '/avatars/avatar_f2.png',
+            '/avatars/avatar_m3.png', '/avatars/avatar_f3.png',
+            '/avatars/avatar_m4.png', '/avatars/avatar_f4.png',
+        ];
+
+        function hashName(str) {
+            let h = 0;
+            for (let i = 0; i < str.length; i++) h = (Math.imul(31, h) + str.charCodeAt(i)) | 0;
+            return Math.abs(h);
+        }
+
+        function getAvatar(name) {
+            return PIXAR_AVATARS[hashName(name.toLowerCase()) % PIXAR_AVATARS.length];
+        }
+
+        const NAMES = [
+            "Aria Voss", "Jaxon Drift", "Nova Kane", "Elias Thorne", "Lyra Vance",
+            "Orion Slate", "Kaia Steele", "Silas Rey", "Maya Frost", "Zane Brooks",
+            "Elena Rostova", "Marcus Flint", "Sienna Blake", "Leo Vanguard",
+            "Cora Nightingale", "Dante Vesper", "Isla Dawn", "Kaelen Shadow",
+            "Luna Solaris", "Ryker Storm", "Veda Echo", "Xavier Zen"
+        ];
+ 
+        const GOALS = [
+            { name: "Morning Meditation",  icon: "fa-om",          total: 30, color: 'var(--primary)'  },
+            { name: "Intermittent Fasting",icon: "fa-clock",       total: 21, color: 'var(--secondary)'},
+            { name: "10K Steps Daily",     icon: "fa-shoe-prints", total: 60, color: 'var(--success)'  },
+            { name: "No Sugar Protocol",   icon: "fa-ban",         total: 14, color: 'var(--accent)'   },
+            { name: "Strength Training",   icon: "fa-dumbbell",    total: 90, color: 'var(--warning)'  },
+            { name: "Deep Sleep Opti.",    icon: "fa-bed",         total: 21, color: '#6366f1'         },
+            { name: "Hydration Target",    icon: "fa-glass-water", total: 30, color: '#06b6d4'         },
+            { name: "Reading 20 Pages",    icon: "fa-book",        total: 100,color: '#a855f7'         }
+        ];
+ 
+        const CHIP_SETS = [
+            ['🔥 On Fire',    'chip-amber'],
+            ['⚡ Consistent', 'chip-green'],
+            ['🏆 Top 10%',    'chip-purple'],
+            ['💧 Hydrated',   'chip-green'],
+            ['🎯 Focused',    'chip-purple'],
+            ['🌟 Rising',     'chip-amber'],
+        ];
+ 
+        function generateData() {
+            // Shuffle names to get different ones each time
+            const shuffledNames = [...NAMES].sort(() => 0.5 - Math.random());
+            
+            return Array.from({ length: 12 }, (_, i) => {
+                const name = shuffledNames[i % shuffledNames.length];
+                const goal = GOALS[Math.floor(Math.random() * GOALS.length)];
+                const currentDay = Math.floor(Math.random() * goal.total) + 1;
+                const level   = Math.floor(Math.random() * 15) + 1;
+                const chip    = CHIP_SETS[Math.floor(Math.random() * CHIP_SETS.length)];
+                return {
+                    name, level,
+                    avatar: getAvatar(name),
+                    isOnline: Math.random() > 0.35,
+                    goalName: goal.name, goalIcon: goal.icon, goalColor: goal.color,
+                    currentDay, totalDays: goal.total,
+                    progressPct: Math.round((currentDay / goal.total) * 100),
+                    chipLabel: chip[0], chipClass: chip[1],
+                };
+            });
+        }
+ 
+        /* ── Spawn tiny particles around each avatar ── */
+        function spawnParticles(wrap, color = '#8b5cf6') {
+            function drop() {
+                const p = document.createElement('div');
+                p.className = 'avatar-particle';
+                const size  = Math.random() * 4 + 2;
+                const angle = Math.random() * 360;
+                const r     = 40 + Math.random() * 10;
+                const rad   = angle * Math.PI / 180;
+                p.style.cssText = `
+                    width:${size}px;height:${size}px;
+                    background:${color};
+                    box-shadow:0 0 ${size * 2}px ${color};
+                    left:${43 + Math.cos(rad) * r}px;
+                    top:${43 + Math.sin(rad) * r}px;
+                    animation-duration:${1.2 + Math.random() * 1.8}s;
+                    animation-delay:${Math.random() * 1.5}s;
+                `;
+                wrap.appendChild(p);
+                setTimeout(() => p.remove(), 3000);
+            }
+            return setInterval(drop, 500);
+        }
+ 
+        function render() {
+            const grid  = document.getElementById('communityGrid');
+            const users = generateData();
+            grid.innerHTML = '';
+            const intervals = [];
+ 
+            users.forEach((user, i) => {
+                const card = document.createElement('div');
+                card.className = 'profile-card';
+                card.style.cssText = `
+                    animation: cardSlideIn 0.55s cubic-bezier(0.175,0.885,0.32,1.275) both;
+                    animation-delay: ${i * 0.05}s;
+                    --profile-accent: ${user.goalColor};
+                `;
+                
+                // Set custom accent for the card hover
+                card.style.setProperty('--primary-glow', `${user.goalColor}66`); // 40% alpha
+
+                card.innerHTML = `
+                    <div class="profile-header">
+                        <div class="avatar-wrap" id="aw${i}">
+                            <div class="avatar-orbit-ring" style="border-color:${user.goalColor}44"></div>
+                            <div class="avatar-glow-ring" style="background: conic-gradient(from 0deg, ${user.goalColor}, #fff, ${user.goalColor})">
+                                <div class="avatar-inner-circle">
+                                    <img src="${user.avatar}" alt="${user.name}" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="avatar-level" style="background:${user.goalColor}">Lv${user.level}</div>
+                            ${user.isOnline ? '<div class="status-dot"></div>' : ''}
+                        </div>
+ 
+                        <div class="user-info">
+                            <h3>${user.name}</h3>
+                            <p style="color:${user.goalColor}">Master Architect</p>
+                            <div class="user-chips">
+                                <span class="chip ${user.chipClass}">${user.chipLabel}</span>
+                                ${user.isOnline ? '<span class="chip chip-green">🟢 Online</span>' : ''}
+                            </div>
+                        </div>
+                    </div>
+ 
+                    <div class="goal-section" style="border-left: 3px solid ${user.goalColor}">
+                        <div class="goal-info">
+                            <div class="goal-name">
+                                <i class="fa-solid ${user.goalIcon}" style="color:${user.goalColor}"></i> ${user.goalName}
+                            </div>
+                            <div class="goal-streak" style="background:${user.goalColor}11; color:${user.goalColor}; border-color:${user.goalColor}33">
+                                <i class="fa-solid fa-fire"></i> Day ${user.currentDay}
+                            </div>
+                        </div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar-fill" data-w="${user.progressPct}" style="background: linear-gradient(90deg, ${user.goalColor}, #fff); box-shadow: 0 0 10px ${user.goalColor}88"></div>
+                        </div>
+                        <div class="progress-stats">
+                            <span style="color:${user.goalColor}">${user.progressPct}% Complete</span>
+                            <span>${user.totalDays}-Day Quest</span>
+                        </div>
+                    </div>
+ 
+                    <button class="cheer-btn" onclick="cheer(this, '${user.goalColor}')">
+                        <i class="fa-solid fa-hands-clapping"></i> Send Cheer
+                    </button>
+                `;
+ 
+                grid.appendChild(card);
+ 
+                setTimeout(() => {
+                    const wrap = document.getElementById(`aw${i}`);
+                    if (wrap) intervals.push(spawnParticles(wrap, user.goalColor));
+                }, 200 + i * 80);
+            });
+ 
+            /* Animate progress bars */
+            setTimeout(() => {
+                document.querySelectorAll('.progress-bar-fill').forEach(b => {
+                    b.style.width = b.dataset.w + '%';
+                });
+            }, 500);
+ 
+            return intervals;
+        }
+ 
+        function cheer(btn, color) {
+            btn.classList.toggle('cheered');
+            if (btn.classList.contains('cheered')) {
+                btn.style.background = color;
+                btn.style.borderColor = color;
+                btn.style.color = '#fff';
+                btn.style.boxShadow = `0 4px 20px ${color}77`;
+                btn.innerHTML = `<i class="fa-solid fa-check"></i> Cheer Sent! 🎉`;
+            } else {
+                btn.style.background = '';
+                btn.style.borderColor = '';
+                btn.style.color = '';
+                btn.style.boxShadow = '';
+                btn.innerHTML = `<i class="fa-solid fa-hands-clapping"></i> Send Cheer`;
+            }
+        }
+ 
+        let active = render();
+        /* Refresh every 60s to simulate live feed */
+        setInterval(() => { if(active) active.forEach(clearInterval); active = render(); }, 60000);
+    </script>
+
+    <!-- Mobile bottom nav -->
+    <nav class="mobile-nav">
+        <a href="home.html" class="mobile-nav-link"><i class="fa-solid fa-house"></i><span>Home</span></a>
+        <a href="library.html" class="mobile-nav-link"><i class="fa-solid fa-book-open"></i><span>Library</span></a>
+        <a href="dashboard.html" class="mobile-nav-link"><i class="fa-solid fa-chart-line"></i><span>Stats</span></a>
+        <a href="people_progress.html" class="mobile-nav-link active"><i class="fa-solid fa-users"></i><span>People</span></a>
+        <a href="profile.html" class="mobile-nav-link"><i class="fa-solid fa-user"></i><span>Profile</span></a>
+    </nav>
+</body>
+</html>
