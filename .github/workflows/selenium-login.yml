@@ -2,9 +2,9 @@ name: Selenium E2E Test Runner
 
 on:
   push:
-    branches: [ main, master ]
+    branches: [ main, master,selenium-dashboard-test ]
   pull_request:
-    branches: [ main, master ]
+    branches: [ main, master,selenium-dashboard-test ]
 
 jobs:
   selenium-login-test:
