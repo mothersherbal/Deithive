@@ -1,9 +1,21 @@
 Suite,Test Case,Status,Duration (ms),Error Message
-"DietHive Frontend Selenium Test Suite 1. Landing Page (index.html)","should load index.html and display correct title and header elements","Passed",1371,""
-"DietHive Frontend Selenium Test Suite 1. Landing Page (index.html)","should redirect to login.html when clicking on LAUNCH SYNC","Passed",1439,""
-"DietHive Frontend Selenium Test Suite 2. Universal Registration (signup.html)","should show alert when password and confirm password do not match","Passed",2141,""
-"DietHive Frontend Selenium Test Suite 2. Universal Registration (signup.html)","should successfully register a new user with correct credentials and show success view","Passed",2883,""
-"DietHive Frontend Selenium Test Suite 3. Login Console (login.html)","should fail authentication with incorrect access key and trigger alert","Passed",1457,""
-"DietHive Frontend Selenium Test Suite 3. Login Console (login.html)","should successfully authenticate with registered credentials and store user variables in localStorage","Passed",2146,""
-"DietHive Frontend Selenium Test Suite 4. Session Guard & Home Dashboard (home.html)","should immediately redirect to login.html if loading home.html without local storage variables","Passed",1301,""
-"DietHive Frontend Selenium Test Suite 5. Reset Access Protocol (forgot_password.html)","should fail with error if attempting forgot-password with unregistered email","Passed",1376,""
+"DietHive Frontend Selenium Test Suite 1. Landing Page (index.html)","should load index.html and display correct title and header elements","Passed",1625,""
+"DietHive Frontend Selenium Test Suite 1. Landing Page (index.html)","should redirect to login.html when clicking on LAUNCH SYNC","Passed",1530,""
+"DietHive Frontend Selenium Test Suite 2. Universal Registration (signup.html)","should show alert when password and confirm password do not match","Passed",2749,""
+"DietHive Frontend Selenium Test Suite 2. Universal Registration (signup.html)","should successfully register a new user with correct credentials and show success view","Failed",4268,"unexpected alert open: {Alert text : Connection to server failed.}
+  (Session info: chrome=148.0.7778.217)"
+"DietHive Frontend Selenium Test Suite 3. Login Console (login.html)","should fail authentication with incorrect access key and trigger alert","Failed",3637,"Expected values to be strictly equal:
++ actual - expected
+
++ 'Connection to server failed.'
+- 'Incorrect password. Please try again.'
+"
+"DietHive Frontend Selenium Test Suite 3. Login Console (login.html)","should successfully authenticate with registered credentials and store user variables in localStorage","Failed",3271,"unexpected alert open: {Alert text : Connection to server failed.}
+  (Session info: chrome=148.0.7778.217)"
+"DietHive Frontend Selenium Test Suite 4. Session Guard & Home Dashboard (home.html)","should immediately redirect to login.html if loading home.html without local storage variables","Passed",1670,""
+"DietHive Frontend Selenium Test Suite 5. Reset Access Protocol (forgot_password.html)","should fail with error if attempting forgot-password with unregistered email","Failed",3897,"Expected values to be strictly equal:
++ actual - expected
+
++ 'Network connection failed.'
+- 'Email not registered'
+"
